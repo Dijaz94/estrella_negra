@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --color-bg-base: #0a0908;
+  --color-bg-surface: #131211;
+  --color-bg-surface-alt: #1c1a19;
+
+  --color-text-heading: #f7f6f3;
+  --color-text-body: #e9e7e1;
+  --color-text-muted: #9c9997;
+
+  --color-brand-gold: #c9a916;
+  --color-brand-gold-hover: #e0c520;
+  --color-brand-gold-soft: #f5ea8b;
+
+  --color-label-bg: #c69a2e;
+  --color-label-bg-dark: #a37c22;
+
+  --color-cta: #e0342a;
+  --color-cta-hover: #b6241c;
+  --color-cta-soft: #f0554a;
+
+  --color-border-subtle: #2b2928;
+  --color-border-strong: #403d3b;
+
+  --font-display: 'Anton', 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}

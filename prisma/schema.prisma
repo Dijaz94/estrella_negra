@@ -11,3 +11,97 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+
+
+enum EstadoEvento{
+  PROGRAMADO
+  CANCELADO
+  FINALIZADO
+}
+
+enum Rol{
+  ADMIN
+  EDITOR
+}
+
+model evento{
+id_evento Int @id @default(autoincrement())
+titulo String @db.VarChar(100)
+descripcion String @db.Text
+artistas      String?  @db.VarChar(255)
+fecha_inicio DateTime @db.Date
+fecha_fin DateTime? @db.Date
+fecha_hora DateTime @db.Time
+afiche_url String @db.VarChar(100)
+estado EstadoEvento
+capacidad_max Int
+created_at DateTime @default(now())
+
+updated_at DateTime @updatedAt
+
+@@index([fecha_inicio])
+}
+
+model usuario{
+  id_usuario Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  apellido String @db.VarChar(50)
+  correo String @db.VarChar(254) @unique
+  password_hash String @db.VarChar(255)
+  rol Rol
+  activo Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([id_usuario])
+}
+
+model categoria{
+  id_categoria Int @id @default(autoincrement())
+  nombre String @db.VarChar(30)
+  orden Int @db.SmallInt
+  productos producto []
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+@@index([id_categoria])
+}
+model producto{
+  id_producto Int  @default(autoincrement()) @id
+  id_categoria Int  
+  nombre String @db.VarChar(80)
+  descripcion String @db.Text
+  precio Int
+  imagen_url String @db.VarChar(254)
+  disponible Boolean @default(true)
+  destacado Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+categoria categoria  @relation(fields:[id_categoria], references:[id_categoria])
+@@index([id_categoria])
+}
+
+
+model negocio{
+id_configuracion Int  @default(autoincrement()) @id
+nombre_local String @db.VarChar(50)
+descripcion String @db.Text
+direccion String @db.VarChar(50)
+horario String @db.VarChar(200)
+telefono String @db.VarChar(20)
+whatsapp String @db.VarChar(20)
+correo String @db.VarChar(254)  @unique
+logo_url String @db.VarChar(254)
+banner_url String @db.VarChar(254)
+redes red_social []
+created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+model red_social{
+id_red Int  @default(autoincrement()) @id
+nombre String @db.VarChar(20)
+red_url  String @db.VarChar(254)
+id_configuracion Int
+configuracion negocio @relation(fields: [id_configuracion], references: [id_configuracion])
+}
