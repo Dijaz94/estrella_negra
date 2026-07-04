@@ -34,7 +34,7 @@ artistas      String?  @db.VarChar(255)
 fecha_inicio DateTime @db.Date
 fecha_fin DateTime? @db.Date
 fecha_hora DateTime @db.Time
-afiche_url String @db.VarChar(100)
+afiche_url String? @db.VarChar(100)
 estado EstadoEvento
 capacidad_max Int
 created_at DateTime @default(now())
@@ -73,7 +73,7 @@ model producto{
   nombre String @db.VarChar(80)
   descripcion String @db.Text
   precio Int
-  imagen_url String @db.VarChar(254)
+  imagen_url String? @db.VarChar(254)
   disponible Boolean @default(true)
   destacado Boolean @default(true)
   created_at DateTime @default(now())
@@ -88,12 +88,12 @@ id_configuracion Int  @default(autoincrement()) @id
 nombre_local String @db.VarChar(50)
 descripcion String @db.Text
 direccion String @db.VarChar(50)
-horario String @db.VarChar(200)
+horario Json
 telefono String @db.VarChar(20)
 whatsapp String @db.VarChar(20)
 correo String @db.VarChar(254)  @unique
-logo_url String @db.VarChar(254)
-banner_url String @db.VarChar(254)
+logo_url String? @db.VarChar(254)
+banner_url String? @db.VarChar(254)
 redes red_social []
 created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -101,7 +101,7 @@ created_at DateTime @default(now())
 model red_social{
 id_red Int  @default(autoincrement()) @id
 nombre String @db.VarChar(20)
-red_url  String @db.VarChar(254)
+red_url  String? @db.VarChar(254)
 id_configuracion Int
 configuracion negocio @relation(fields: [id_configuracion], references: [id_configuracion])
 }

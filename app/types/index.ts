@@ -11,12 +11,19 @@ export interface EventoPublic {
   capacidad_max: number
 }
 
+export interface DiaHorario {
+  dia: string
+  abierto: boolean
+  hora_apertura?: string
+  hora_cierre?: string
+}
+
 export interface BusinessInfo {
   id_configuracion: number
   nombre_local: string
   descripcion: string
   direccion: string
-  horario: string
+  horario: DiaHorario[]
   telefono: string
   whatsapp: string
   correo: string

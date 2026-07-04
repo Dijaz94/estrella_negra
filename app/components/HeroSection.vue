@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { BusinessInfo } from '~/types'
 
-defineProps<{
+const props = defineProps<{
   business: BusinessInfo
 }>()
+
+const hoy = computed(() => horarioDeHoy(props.business.horario))
 </script>
 
 <template>
@@ -18,7 +20,7 @@ defineProps<{
         class="h-full w-full object-cover"
         loading="lazy"
       />
-      <div class="absolute inset-0 bg-gradient-to-b from-bg-base/70 via-bg-base/60 to-bg-base" />
+      <div class="absolute inset-0 bg-linear-to-b from-bg-base/70 via-bg-base/60 to-bg-base" />
     </div>
 
     <div class="hero-fade-in text-center">
@@ -58,12 +60,20 @@ defineProps<{
         </a>
       </div>
 
-      <div class="mt-6 flex items-center justify-center gap-6 text-xs text-text-muted md:text-sm">
+      <div class="mt-8 flex items-center justify-center gap-4 text-xs text-text-muted md:text-sm">
         <span v-if="business.direccion" class="flex items-center gap-1.5">
           📍 {{ business.direccion }}
         </span>
-        <span v-if="business.horario" class="flex items-center gap-1.5">
-          🕐 {{ business.horario }}
+        <span
+          v-if="business.horario?.length"
+          class="flex items-center gap-1.5"
+          :class="{ 'text-brand-gold': hoy && hoy.abierto }"
+        >
+          <span
+            class="inline-block h-1.5 w-1.5 rounded-full"
+            :class="hoy?.abierto ? 'bg-green-500' : 'bg-red-500'"
+          />
+          {{ hoy ? (hoy.abierto ? `Abierto hoy — ${hoy.hora_apertura} a ${hoy.hora_cierre}` : 'Cerrado hoy') : '' }}
         </span>
       </div>
     </div>
