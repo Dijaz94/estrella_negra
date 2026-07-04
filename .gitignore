@@ -23,4 +23,6 @@ logs
 .env.*
 !.env.example
 
+
+AGENTS.md
 /app/generated/prisma
