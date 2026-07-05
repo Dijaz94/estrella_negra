@@ -15,7 +15,7 @@ function esHoy(dia: string): boolean {
 <template>
   <section class="grid gap-4 md:grid-cols-3">
     <div class="card-hover rounded-lg border border-border-subtle bg-bg-surface p-5 md:p-6">
-      <h3 class="font-display mb-2 text-lg tracking-widest uppercase text-brand-gold font-semibold">
+      <h3 class="font-display mb-2 text-lg tracking-widest uppercase text-brand-gold ">
         Ubicación
       </h3>
       <p class="text-base leading-relaxed text-text-muted">
@@ -32,7 +32,7 @@ function esHoy(dia: string): boolean {
     </div>
 
     <div class="card-hover rounded-lg border border-border-subtle bg-bg-surface p-5 md:p-6">
-      <h3 class="font-display mb-3 text-lg tracking-widest uppercase text-brand-gold font-semibold">
+      <h3 class="font-display mb-3 text-lg tracking-widest uppercase text-brand-gold ">
         Horario
       </h3>
       <ul class="space-y-1.5">
@@ -65,7 +65,7 @@ function esHoy(dia: string): boolean {
     </div>
 
     <div class="card-hover rounded-lg border border-border-subtle bg-bg-surface p-5 md:p-6">
-      <h3 class="font-display mb-2 text-lg tracking-widest font-semibold uppercase text-brand-gold">
+      <h3 class="font-display mb-2 text-lg tracking-widest  uppercase text-brand-gold">
         Contacto
       </h3>
       <div class="space-y-2 text-base text-text-muted">

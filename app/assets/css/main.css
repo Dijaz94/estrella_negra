@@ -24,6 +24,12 @@
   --color-border-subtle: #2b2928;
   --color-border-strong: #403d3b;
 
-  --font-display: 'Big Shoulders Display', 'Oswald', sans-serif;
+  --font-display:  'Oswald', 'Anton', sans-serif;
   --font-body: 'Sora', sans-serif;
+}
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
 }

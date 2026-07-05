@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex min-h-screen bg-bg-base text-text-body">
+  <div class="flex min-h-screen bg-bg-base text-text-body scrollbar-gutter-stable">
     <aside
       class="flex w-64 flex-col border-r border-border-subtle bg-bg-surface p-4"
     >
