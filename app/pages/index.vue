@@ -11,7 +11,7 @@ const { data: business } = await useFetch('/api/business')
     <section class="text-center">
       <NuxtLink
         to="/menu"
-        class="inline-flex items-center gap-2 rounded border border-brand-gold/40 px-8 py-3 font-display text-sm tracking-widest uppercase text-brand-gold transition-all duration-200 hover:bg-brand-gold/10 active:scale-[0.97]"
+        class="inline-flex items-center gap-2 rounded border border-brand-gold/40 px-8 py-3 font-display text-base font-semibold tracking-widest uppercase text-brand-gold transition-all duration-200 hover:bg-brand-gold/10 active:scale-[0.97]"
       >
         Ver menú completo
       </NuxtLink>

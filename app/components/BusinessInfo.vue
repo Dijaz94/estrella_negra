@@ -15,48 +15,48 @@ function esHoy(dia: string): boolean {
 <template>
   <section class="grid gap-4 md:grid-cols-3">
     <div class="card-hover rounded-lg border border-border-subtle bg-bg-surface p-5 md:p-6">
-      <h3 class="font-display mb-2 text-sm tracking-widest uppercase text-brand-gold">
+      <h3 class="font-display mb-2 text-lg tracking-widest uppercase text-brand-gold font-semibold">
         Ubicación
       </h3>
-      <p class="text-sm leading-relaxed text-text-muted">
+      <p class="text-base leading-relaxed text-text-muted">
         {{ business.direccion }}
       </p>
       <a
         :href="`https://maps.google.com/?q=${encodeURIComponent(business.direccion)}`"
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-2 inline-flex items-center gap-1 text-xs text-brand-gold transition-colors hover:text-brand-gold-hover"
+        class="mt-2 inline-flex items-center gap-1 text-base text-brand-gold transition-colors hover:text-brand-gold-hover"
       >
         Abrir en Google Maps →
       </a>
     </div>
 
     <div class="card-hover rounded-lg border border-border-subtle bg-bg-surface p-5 md:p-6">
-      <h3 class="font-display mb-3 text-sm tracking-widest uppercase text-brand-gold">
+      <h3 class="font-display mb-3 text-lg tracking-widest uppercase text-brand-gold font-semibold">
         Horario
       </h3>
       <ul class="space-y-1.5">
         <li
           v-for="d in business.horario"
           :key="d.dia"
-          class="flex items-center justify-between rounded px-2 py-1 text-sm transition-colors"
+          class="flex items-center justify-between rounded px-2 py-1 text-base transition-colors"
           :class="esHoy(d.dia)
             ? 'border border-brand-gold/30 bg-brand-gold/5 font-medium text-brand-gold'
             : 'text-text-muted'"
         >
-          <span class="text-xs" :class="esHoy(d.dia) ? 'text-brand-gold' : ''">
+          <span class="text-base" :class="esHoy(d.dia) ? 'text-brand-gold' : ''">
             {{ d.dia }}
           </span>
           <span
             v-if="d.abierto"
-            class="text-xs tracking-wide"
+            class="text-base tracking-wide"
             :class="esHoy(d.dia) ? 'text-brand-gold-soft' : ''"
           >
             {{ d.hora_apertura }} — {{ d.hora_cierre }}
           </span>
           <span
             v-else
-            class="text-[10px] tracking-wider uppercase text-red-400"
+            class="text-lg tracking-wider uppercase text-red-400"
           >
             Cerrado
           </span>
@@ -65,20 +65,17 @@ function esHoy(dia: string): boolean {
     </div>
 
     <div class="card-hover rounded-lg border border-border-subtle bg-bg-surface p-5 md:p-6">
-      <h3 class="font-display mb-2 text-sm tracking-widest uppercase text-brand-gold">
+      <h3 class="font-display mb-2 text-lg tracking-widest font-semibold uppercase text-brand-gold">
         Contacto
       </h3>
-      <div class="space-y-2 text-sm text-text-muted">
+      <div class="space-y-2 text-base text-text-muted">
         <p v-if="business.telefono" class="flex items-center gap-2">
           <span class="text-xs">📞</span>
           {{ business.telefono }}
         </p>
-        <p v-if="business.whatsapp" class="flex items-center gap-2">
-          <span class="text-xs">💬</span>
-          {{ business.whatsapp }}
-        </p>
+        
         <p v-if="business.correo" class="flex items-center gap-2">
-          <span class="text-xs">✉</span>
+          <span class="text-base">✉</span>
           {{ business.correo }}
         </p>
       </div>

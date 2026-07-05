@@ -60,7 +60,7 @@ const hoy = computed(() => horarioDeHoy(props.business.horario))
         </a>
       </div>
 
-      <div class="mt-8 flex items-center justify-center gap-4 text-xs text-text-muted md:text-sm">
+      <div class="mt-8 flex items-center justify-center gap-4 text-sm  text-text-muted md:text-base">
         <span v-if="business.direccion" class="flex items-center gap-1.5">
           📍 {{ business.direccion }}
         </span>
