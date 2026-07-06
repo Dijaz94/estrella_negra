@@ -2,6 +2,19 @@
 definePageMeta({
   middleware: 'auth',
 })
+
+const route = useRoute()
+const isActive = (to:string)=>route.path===to
+
+const navigationItems = [
+    {label:'Dashboard', to:'/'},
+    
+    {label:'Eventos', to:'/admin/eventos'},
+    {label:'Menú', to:'/admin/menu'},
+    {label:'Negocio', to:'/admin/negocio'},
+    {label:'Redes Sociales', to:'/admin/redes'},
+    {label:'Usuarios', to:'/admin/usuarios'},
+]
 </script>
 
 <template>
@@ -9,51 +22,13 @@ definePageMeta({
     <aside
       class="flex w-64 flex-col border-r border-border-subtle bg-bg-surface p-4"
     >
-      <NuxtLink
-        to="/admin/dashboard"
+      <NuxtLink v-for="page in navigationItems"
+        :to="page.to"
         class="mb-8 font-display text-xl tracking-widest uppercase text-text-heading"
       >
-        Admin
+        {{ page.label }}
       </NuxtLink>
 
-      <nav class="flex flex-col gap-1 text-sm">
-        <NuxtLink
-          to="/admin/dashboard"
-          class="rounded px-3 py-2 hover:bg-bg-surface-alt transition-colors"
-        >
-          Dashboard
-        </NuxtLink>
-        <NuxtLink
-          to="/admin/eventos"
-          class="rounded px-3 py-2 hover:bg-bg-surface-alt transition-colors"
-        >
-          Eventos
-        </NuxtLink>
-        <NuxtLink
-          to="/admin/menu"
-          class="rounded px-3 py-2 hover:bg-bg-surface-alt transition-colors"
-        >
-          Menú
-        </NuxtLink>
-        <NuxtLink
-          to="/admin/negocios"
-          class="rounded px-3 py-2 hover:bg-bg-surface-alt transition-colors"
-        >
-          Negocio
-        </NuxtLink>
-        <NuxtLink
-          to="/admin/redes"
-          class="rounded px-3 py-2 hover:bg-bg-surface-alt transition-colors"
-        >
-          Redes Sociales
-        </NuxtLink>
-        <NuxtLink
-          to="/admin/usuarios"
-          class="rounded px-3 py-2 hover:bg-bg-surface-alt transition-colors"
-        >
-          Usuarios
-        </NuxtLink>
-      </nav>
 
       <div class="mt-auto pt-4 border-t border-border-subtle">
         <NuxtLink
