@@ -7,14 +7,17 @@ const route = useRoute()
 const isActive = (to:string)=>route.path===to
 
 const navigationItems = [
-    {label:'Dashboard', to:'/'},
+    {label:'Dashboard', to:'/admin/dashboard'},
     
     {label:'Eventos', to:'/admin/eventos'},
     {label:'Menú', to:'/admin/menu'},
-    {label:'Negocio', to:'/admin/negocio'},
+    {label:'Negocio', to:'/admin/negocios'},
     {label:'Redes Sociales', to:'/admin/redes'},
     {label:'Usuarios', to:'/admin/usuarios'},
 ]
+
+const { data: business } = await useFetch('/api/business')
+
 </script>
 
 <template>
@@ -22,9 +25,21 @@ const navigationItems = [
     <aside
       class="flex w-64 flex-col border-r border-border-subtle bg-bg-surface p-4"
     >
+    <NuxtLink
+          to="/"
+          class="font-display text-xl tracking-widest uppercase text-text-heading mb-7"
+        >
+          <img
+            v-if="business?.logo_url"
+            :src="business.logo_url"
+            :alt="business.nombre_local"
+            class="h-10 w-auto"
+          />
+          <span v-else>{{ business?.nombre_local ?? 'Estrella Negra' }}</span>
+        </NuxtLink>
       <NuxtLink v-for="page in navigationItems"
         :to="page.to"
-        class="mb-8 font-display text-xl tracking-widest uppercase text-text-heading"
+        class="rounded-lg mb-8 font-display text-xl tracking-widest uppercase text-text-heading hover:bg-brand-gold-hover duration-500 p-2" :class="isActive(page.to)?'border-b-2 border-brand-gold':''"
       >
         {{ page.label }}
       </NuxtLink>
