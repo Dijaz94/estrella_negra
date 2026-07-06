@@ -1,3 +1,7 @@
 export function useMenu() {
-  return useFetch('/api/menu')
+  const data = useFetch('/api/menu')
+
+  
+  return data
+
 }

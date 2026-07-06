@@ -16,10 +16,12 @@ export async function getBusinessInfo(): Promise<BusinessInfo | null> {
   return {
     ...negocio,
     horario,
+    logo_url: negocio.logo_url ?? '',
+    banner_url: negocio.banner_url ?? '',
     redes: negocio.redes.map((r) => ({
       id_red: r.id_red,
       nombre: r.nombre,
-      red_url: r.red_url,
+      red_url: r.red_url ?? '',
     })),
   }
 }

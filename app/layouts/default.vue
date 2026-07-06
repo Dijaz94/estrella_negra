@@ -11,7 +11,7 @@ const { data: business } = useBusiness()
 </script>
 
 <template>
-  <div class="min-h-screen bg-bg-base text-text-body scrollbar-gutter-stable">
+  <div class=" flex flex-col min-h-screen bg-bg-base/40 text-text-body scrollbar-gutter-stable">
     <header
       class="sticky top-0 z-50 border-b border-border-subtle bg-bg-base/80 backdrop-blur-md"
     >
@@ -47,12 +47,12 @@ const { data: business } = useBusiness()
       </div>
     </header>
 
-    <main class="mx-auto max-w-6xl px-4 py-8">
+    <main class="mx-auto w-full max-w-6xl px-4 py-8 grow">
       <slot />
     </main>
 
     <footer
-      class="border-t border-border-subtle bg-bg-surface py-8 text-center text-sm text-text-muted"
+      class="border-t border-border-subtle bg-bg-surface py-8 text-center text-sm text-text-muted "
     >
       <div class="mx-auto max-w-6xl px-4">
         <div v-if="business" class="mb-4 flex items-center justify-center gap-4">

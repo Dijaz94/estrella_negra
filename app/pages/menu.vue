@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CategoryItem } from '~/types'
 
-const { data: menu } = useMenu()
+const { data: menu, pending } = useMenu()
 
 const categorias = computed<CategoryItem[]>(() => menu.value ?? [])
 
@@ -25,6 +25,7 @@ const filteredCategorias = computed(() => {
 
 function setSectionRef(id: number, el: HTMLElement | null) {
   if (el) sectionEls.value.set(id, el)
+  else sectionEls.value.delete(id)
 }
 
 function scrollTo(id: number) {
@@ -34,29 +35,34 @@ function scrollTo(id: number) {
 
 let observer: IntersectionObserver | null = null
 
+function rebuildObserver() {
+  observer?.disconnect()
+  if (!categorias.value.length) return
+  observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          activeId.value = Number((entry.target as HTMLElement).dataset.categoryId)
+        }
+      }
+    },
+    { rootMargin: '-80px 0px -60% 0px' },
+  )
+  for (const el of sectionEls.value.values()) {
+    observer.observe(el)
+  }
+}
+
 watch(filteredCategorias, () => {
   const cats = filteredCategorias.value
-  if(cats[0])activeId.value = cats.length ? cats[0].id_categoria : null
+  if(cats[0]) activeId.value = cats.length ? cats[0].id_categoria : null
+})
 
-  nextTick(() => {
-    observer?.disconnect()
-    if (!cats.length) return
-    observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            activeId.value = Number((entry.target as HTMLElement).dataset.categoryId)
-          }
-        }
-      },
-      { rootMargin: '-80px 0px -60% 0px' },
-    )
-    for (const el of sectionEls.value.values()) {
-      observer.observe(el)
-    }
-  })
-}, { immediate: true })
+watch(searchQuery, (q, prev) => {
+  if (!q.trim() && prev.trim()) nextTick(rebuildObserver)
+})
 
+onMounted(() => { nextTick(rebuildObserver) })
 onUnmounted(() => observer?.disconnect())
 </script>
 
@@ -179,11 +185,15 @@ onUnmounted(() => observer?.disconnect())
           </div>
         </li>
       </ul>
-    </section>
-
-    <div v-if="!categorias.length" class="py-16 text-center">
+      
+      
+      
+    <div v-if="!pending && menu?.length == 0" class="py-16 text-center">
       <p class="text-text-muted">El menú se está actualizando.</p>
     </div>
+    </section>
+
+
   </div>
 </template>
 

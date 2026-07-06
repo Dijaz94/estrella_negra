@@ -28,6 +28,10 @@
   --font-body: 'Sora', sans-serif;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 :root {
   --ui-bg: var(--color-bg-base);
   --ui-bg-elevated: var(--color-bg-surface);
