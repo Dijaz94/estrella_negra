@@ -11,7 +11,7 @@ const { data: business } = await useFetch('/api/business')
 </script>
 
 <template>
-  <div class="min-h-screen bg-bg-base text-text-body">
+  <div class="min-h-screen bg-bg-base text-text-body scrollbar-gutter-stable">
     <header
       class="sticky top-0 z-50 border-b border-border-subtle bg-bg-base/80 backdrop-blur-md"
     >

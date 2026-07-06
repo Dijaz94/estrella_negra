@@ -1,19 +1,20 @@
-import type { eventoModel } from '../app/generated/prisma/models'
-import type { $Enums } from '../app/generated/prisma/enums'
+import type { EstadoEvento as EstadoEventoT, Rol as EnumRol } from '../../app/generated/prisma/enums'
 
-export type EventoPublic = Pick<
-  eventoModel,
-  | 'id_evento'
-  | 'titulo'
-  | 'descripcion'
-  | 'artistas'
-  | 'fecha_inicio'
-  | 'fecha_fin'
-  | 'fecha_hora'
-  | 'afiche_url'
-  | 'estado'
-  | 'capacidad_max'
->
+export type EventoEstado = EstadoEventoT
+export type Rol = EnumRol
+
+export type EventoPublic = {
+  id_evento: number
+  titulo: string
+  descripcion: string
+  artistas: string | null
+  fecha_inicio: string
+  fecha_fin: string | null
+  fecha_hora: string
+  afiche_url: string | null
+  estado: EventoEstado
+  capacidad_max: number
+}
 
 export interface BusinessInfo {
   id_configuracion: number
@@ -52,6 +53,3 @@ export interface CategoryItem {
   orden: number
   productos: MenuItem[]
 }
-
-export type EventoEstado = $Enums.EstadoEvento
-export type Rol = $Enums.Rol

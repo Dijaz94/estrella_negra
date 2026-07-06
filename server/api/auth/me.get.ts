@@ -1,14 +1,4 @@
 export default defineEventHandler(async (event) => {
-  const path = getRequestURL(event).pathname
-
-  if (!path.startsWith('/api/admin')) {
-    return
-  }
-
-  if (path === '/api/admin/auth/login') {
-    return
-  }
-
   const authHeader = getHeader(event, 'authorization')
   let token: string | undefined
 
@@ -21,19 +11,27 @@ export default defineEventHandler(async (event) => {
   if (!token) {
     throw createError({ statusCode: 401, message: 'No autorizado' })
   }
+
   const payload = verifyToken(token)
   if (!payload) {
-    throw createError({ statusCode: 401, message: 'Token inválido' })
+    throw createError({ statusCode: 401, message: 'Token inválido o expirado' })
   }
 
   const user = await prisma.usuario.findUnique({
     where: { id_usuario: payload.userId },
-    select: { id_usuario: true, correo: true, rol: true, activo: true },
+    select: {
+      id_usuario: true,
+      nombre: true,
+      apellido: true,
+      correo: true,
+      rol: true,
+      activo: true,
+    },
   })
 
   if (!user || !user.activo) {
     throw createError({ statusCode: 401, message: 'Usuario inactivo' })
   }
 
-  event.context.user = user
+  return user
 })

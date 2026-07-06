@@ -28,8 +28,25 @@
   --font-body: 'Sora', sans-serif;
 }
 
+:root {
+  --ui-bg: var(--color-bg-base);
+  --ui-bg-elevated: var(--color-bg-surface);
+  --ui-bg-muted: var(--color-bg-surface-alt);
+  --ui-border: var(--color-border-subtle);
+  --ui-text: var(--color-text-body);
+  --ui-text-muted: var(--color-text-muted);
+  --ui-text-highlighted: var(--color-text-heading);
+  --ui-primary: var(--color-brand-gold);
+}
+
 @layer base {
-  html {
-    scrollbar-gutter: stable;
+   html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  body {
+    @apply bg-bg-base;
   }
 }

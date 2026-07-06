@@ -1,4 +1,5 @@
-import { createHash, randomBytes, timingSafeEqual } from 'node:crypto'
+import { hashSync, compareSync } from 'bcryptjs'
+import { createHash } from 'node:crypto'
 
 const TOKEN_SECRET = process.env.NUXT_JWT_SECRET ?? 'change-me-in-production'
 const TOKEN_EXPIRY = 7 * 24 * 60 * 60 * 1000 // 7 days
@@ -10,15 +11,11 @@ export interface TokenPayload {
 }
 
 export function hashPassword(password: string): string {
-  const salt = randomBytes(16).toString('hex')
-  const hash = createHash('sha256').update(salt + password).digest('hex')
-  return `${salt}:${hash}`
+  return hashSync(password, 12)
 }
 
 export function verifyPassword(password: string, stored: string): boolean {
-  const [salt, hash] = stored.split(':')
-  const computed = createHash('sha256').update(salt + password).digest('hex')
-  return timingSafeEqual(Buffer.from(hash), Buffer.from(computed))
+  return compareSync(password, stored)
 }
 
 export function createToken(payload: Omit<TokenPayload, 'exp'>): string {
