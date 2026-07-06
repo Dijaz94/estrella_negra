@@ -1,75 +1,38 @@
-# Nuxt Minimal Starter
+# Estrella Negra
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Sitio web del bar **Estrella Negra** — menú digital, eventos y administración.
+
+## Stack
+
+- **Framework:** Nuxt 4.4.8 (`compatibilityVersion: 4`)
+- **UI:** Nuxt UI v4 + Tailwind CSS v4
+- **DB:** Supabase Postgres + Prisma 7.8
+- **Auth:** Node crypto (HMAC) + bcryptjs
+- **Validación:** Zod v4
 
 ## Setup
 
-Make sure to install dependencies:
-
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+npx nuxt prepare
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Desarrollo
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+npx nuxt dev
 ```
 
-## Production
-
-Build the application for production:
+## Producción
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+npx nuxt build
+npx nuxt preview
 ```
 
-Locally preview production build:
+## BD / Prisma
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+npx prisma migrate dev --name <nombre>
+npx prisma studio
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
