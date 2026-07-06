@@ -1,9 +1,22 @@
-export default defineEventHandler(async (event) => {
-  const { correo, password } = await readBody<{ correo: string; password: string }>(event)
+import { z } from 'zod'
 
-  if (!correo || !password) {
-    throw createError({ statusCode: 400, message: 'Correo y contraseña son requeridos' })
+const loginSchema = z.object({
+  correo: z.string().email('Correo inválido'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
+})
+
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
+  const parsed = loginSchema.safeParse(body)
+
+  if (!parsed.success) {
+    throw createError({
+      statusCode: 400,
+      message: parsed.error.issues.map(i => i.message).join(', '),
+    })
   }
+
+  const { correo, password } = parsed.data
 
   const user = await prisma.usuario.findUnique({
     where: { correo },
@@ -24,7 +37,7 @@ export default defineEventHandler(async (event) => {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   })
 
   return {
