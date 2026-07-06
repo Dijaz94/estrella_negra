@@ -36,7 +36,7 @@ let observer: IntersectionObserver | null = null
 
 watch(filteredCategorias, () => {
   const cats = filteredCategorias.value
-  if(cats[0]) activeId.value = cats.length ? cats[0].id_categoria : null
+  if(cats[0])activeId.value = cats.length ? cats[0].id_categoria : null
 
   nextTick(() => {
     observer?.disconnect()
@@ -82,7 +82,7 @@ onUnmounted(() => observer?.disconnect())
           v-model="searchQuery"
           type="text"
           placeholder="Buscar en el menú…"
-          class="w-full rounded border border-border-subtle bg-bg-base/60 px-3 py-2 text-sm text-text-body placeholder:text-text-muted/50 outline-none transition-colors focus:border-brand-gold/60"
+          class="w-full rounded border border-border-subtle bg-bg-surface-alt px-3 py-2 text-sm text-text-body font-semibold placeholder:text-text-muted outline-none transition-colors focus:border-brand-gold/60"
         />
         <button
           v-if="searchQuery"
