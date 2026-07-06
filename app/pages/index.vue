@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { data: business } = await useFetch('/api/business')
+const { data: business } = useBusiness()
 </script>
 
 <template>

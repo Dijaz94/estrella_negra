@@ -16,7 +16,7 @@ const navigationItems = [
     {label:'Usuarios', to:'/admin/usuarios'},
 ]
 
-const { data: business } = await useFetch('/api/business')
+const { data: business } = useBusiness()
 
 </script>
 

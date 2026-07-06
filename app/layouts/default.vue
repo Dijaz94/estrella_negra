@@ -7,7 +7,7 @@ const navigationItems = [
     {label:'Menú', to:'/menu'},
     {label:'Eventos', to:'/eventos'}
 ]
-const { data: business } = await useFetch('/api/business')
+const { data: business } = useBusiness()
 </script>
 
 <template>
