@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import type { EventoPublic } from '~/types';
+
 const { data: eventos, pending, error } = useEvents()
+const selectedEvento = ref<EventoPublic | null>(null)
 </script>
 
 <template>
@@ -34,13 +37,16 @@ const { data: eventos, pending, error } = useEvents()
 
     <div
       v-else
-      class="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      class="mx-auto place-items-center grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
     >
       <CardEventos
+      
         v-for="evento in eventos"
         :key="evento.id_evento"
         :evento="evento"
+        @click="selectedEvento=evento"
       />
+      <EventoModal :evento="selectedEvento" @close="selectedEvento=null"/>
     </div>
   </div>
 </template>
