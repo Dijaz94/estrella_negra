@@ -52,37 +52,53 @@ const estadoBadge = computed(() => {
     :ui="{ content: 'max-w-2xl w-full' }"
   >
     <template #content="{ close }">
-      <div class="flex flex-col overflow-hidden">
-        <UButton @click="close" 
-          class="absolute font-bold top-3 right-3 z-10 flex items-center justify-center rounded-xl border  text-brand-gold transition-colors hover:border-brand-gold hover:bg-brand-gold/10"
-          icon="i-lucide-x"  variant="outline"
+      <div class="relative flex flex-col">
+        <UButton @click="close"
+          icon="i-lucide-x"
+          variant="outline"
+          class="absolute top-3 right-3 z-20 h-8 w-8 rounded-xl"
         />
         <div
           v-if="evento?.afiche_url"
-          class="relative aspect-video overflow-hidden"
+          class="relative overflow-hidden"
         >
           <img
             :src="evento.afiche_url"
             :alt="evento.titulo"
-            class="h-full w-full object-cover"
+            class="h-auto w-full"
             loading="lazy"
           />
-          <div class="absolute inset-0 bg-linear-to-t from-bg-surface to-transparent" />
-
+          <div class="absolute inset-0 bg-linear-to-t from-bg-surface/60 to-transparent" />
+          <div
+            class="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-between gap-2 px-5 pb-3"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 rounded bg-bg-surface/80 px-3 py-1 font-display text-sm tracking-wider text-brand-gold backdrop-blur-sm"
+            >
+              <span class="text-xs">★</span>
+              {{ badgeText }}
+            </span>
+            <span
+              v-if="estadoBadge"
+              class="inline-flex items-center rounded px-3 py-1 font-display text-sm tracking-wider"
+              :class="estadoBadge.class"
+            >
+              {{ estadoBadge.text }}
+            </span>
+          </div>
         </div>
 
         <div
-          class="flex items-center justify-between gap-2 px-5"
-          :class="evento?.afiche_url ? '-mt-6' : 'mt-5'"
+          v-else
+          class="flex items-center justify-between gap-2 px-5 mt-5"
         >
           <span
             v-if="evento"
-            class="inline-flex items-center gap-1.5 rounded bg-brand-gold/15 px-3 py-1 font-display text-sm tracking-wider text-brand-gold mt-8"
+            class="inline-flex items-center gap-1.5 rounded bg-brand-gold/15 px-3 py-1 font-display text-sm tracking-wider text-brand-gold"
           >
             <span class="text-xs">★</span>
             {{ badgeText }}
           </span>
-
           <span
             v-if="estadoBadge"
             class="inline-flex items-center rounded px-3 py-1 font-display text-sm tracking-wider"
@@ -115,9 +131,6 @@ const estadoBadge = computed(() => {
           </p>
 
           <div class="mt-2 flex items-center gap-4 text-xs tracking-wide text-text-muted/60 uppercase">
-            <span v-if="evento.fecha_hora" class="flex items-center gap-1">
-              {{ formatFecha(evento.fecha_inicio) }}
-            </span>
             <span v-if="evento.fecha_hora" class="flex items-center gap-1">
               {{ formatHora(evento.fecha_hora) }}
             </span>

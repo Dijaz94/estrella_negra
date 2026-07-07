@@ -39,7 +39,7 @@ const { data: business } = useBusiness()
         </NuxtLink>
       <NuxtLink v-for="page in navigationItems"
         :to="page.to"
-        class="rounded-lg mb-8 font-display text-xl tracking-widest uppercase text-text-heading hover:bg-brand-gold-hover duration-500 p-2" :class="isActive(page.to)?'border-b-2 border-brand-gold':''"
+        class="rounded-lg mb-8 font-display text-xl tracking-widest uppercase text-text-heading hover:scale-110 duration-200 p-2" :class="isActive(page.to)?'border-b-2 border-brand-gold':''"
       >
         {{ page.label }}
       </NuxtLink>
