@@ -9,17 +9,17 @@ evento: EventoPublic
 
 <template>
     <article
-    class="card-hover group flex flex-col overflow-hidden rounded-lg border border-border-subtle bg-bg-surface"
+    class="card-hover group flex flex-col max-w-xl overflow-hidden rounded-lg border border-border-subtle bg-bg-surface"
   >
     <!-- Imagen -->
     <div
       v-if="evento.afiche_url"
-      class="relative aspect-video overflow-hidden"
+      class="relative aspect-video overflow-hidden -cover"
     >
       <img
         :src="evento.afiche_url"
         :alt="evento.titulo"
-        class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        class="h-full w-full object-cover transition duration-500 group-hover:scale-105 border-2 border-brand-gold-soft rounded-lg"
         loading="lazy"
       />
       <div class="absolute inset-0 bg-linear-to-t from-bg-surface/60 to-transparent" />
@@ -27,7 +27,7 @@ evento: EventoPublic
 
     <!-- Fecha -->
     <div
-      class="flex items-center gap-2 px-5 pt-5"
+      class="flex items-center gap-2 mx-5 mt-4"
       :class="{ '-mt-10': evento.afiche_url }"
     >
       <span class="inline-flex items-center gap-1.5 rounded bg-brand-gold/15 px-3 py-1 font-display text-sm tracking-wider text-brand-gold">
@@ -63,10 +63,10 @@ evento: EventoPublic
       <!-- Meta inferior -->
       <div class="mt-auto flex items-center gap-4 pt-2 text-xs tracking-wide text-text-muted/60 uppercase">
         <span v-if="evento.fecha_hora" class="flex items-center gap-1">
-          🕐 {{ evento.fecha_hora.slice(0, 5) }}
+          {{ formatHora(evento.fecha_hora) }}
         </span>
         <span class="flex items-center gap-1">
-          ● {{ evento.capacidad_max }} pax
+          ● Capacidad máxima: {{ evento.capacidad_max }} personas
         </span>
       </div>
     </div>
