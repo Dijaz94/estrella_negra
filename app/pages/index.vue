@@ -1,5 +1,39 @@
 <script setup lang="ts">
+import FeedbackForm from '~/components/FeedbackForm.vue';
+
 const { data: business } = useBusiness()
+
+
+const feedback = reactive({
+  nombre:'',
+  email:'',
+  mensaje:''
+})
+
+function limpiarFeedback(){
+  feedback.nombre=''
+  feedback.email=''
+  feedback.mensaje=''
+}
+const enviandoFeedback = ref(false)
+const errorFeedback = ref(false)
+const mensajeError = ref('')
+
+async function handleFeedback(){
+  enviandoFeedback.value=true
+  try{
+    
+      await useFeedback(feedback)
+      limpiarFeedback()
+  }
+  catch(e:any){
+    errorFeedback.value=true
+    mensajeError.value= getApiErrorMessage(e, "No se pudo enviar el formulario de Feedback")
+  }
+  finally{
+    enviandoFeedback.value = false
+  }
+}
 </script>
 
 <template>
@@ -20,7 +54,10 @@ const { data: business } = useBusiness()
     <SocialLinks v-if="business.redes?.length" :redes="business.redes" />
   </div>
 
+
   <div v-else class="flex min-h-[50dvh] items-center justify-center">
     <p class="text-sm text-text-muted">Cargando...</p>
   </div>
+
+  <FeedbackForm :feedback="feedback" :loading="enviandoFeedback" @submit="handleFeedback"/>
 </template>

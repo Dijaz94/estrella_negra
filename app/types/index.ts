@@ -55,3 +55,9 @@ export interface CategoryItem {
   orden: number
   productos: MenuItem[]
 }
+
+export interface Feedback{
+  nombre:string
+  email:string
+  mensaje:string
+}
