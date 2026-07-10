@@ -1,3 +1,6 @@
 export function useFeedback(feedback:{nombre:string, email:string, mensaje:string}){
-    return $fetch('api/feedback')
+    return $fetch('api/feedback',{
+        method:'POST',
+        body:(feedback),
+    })
 }

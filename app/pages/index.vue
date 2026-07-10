@@ -18,17 +18,27 @@ function limpiarFeedback(){
 const enviandoFeedback = ref(false)
 const errorFeedback = ref(false)
 const mensajeError = ref('')
+const toast = useToast()
 
-async function handleFeedback(){
+async function handleFeedback(data: { nombre: string; email: string; mensaje: string }){
   enviandoFeedback.value=true
   try{
-    
-      await useFeedback(feedback)
+    const emailEnviado = data.email
+      await useFeedback(data)
       limpiarFeedback()
+      toast.add({
+        title:'Correo enviado exitosamente.',
+        description:`El correo de ${emailEnviado} se envió con éxito`
+      })
   }
   catch(e:any){
     errorFeedback.value=true
     mensajeError.value= getApiErrorMessage(e, "No se pudo enviar el formulario de Feedback")
+
+    toast.add({
+        title:'Algo salió mal',
+        description:mensajeError.value
+      })
   }
   finally{
     enviandoFeedback.value = false

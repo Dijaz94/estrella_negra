@@ -9,7 +9,10 @@ evento: EventoPublic
 
 <template>
     <article
-    class="card-hover group flex flex-col max-w-sm md:max-w-xl lg:max-w-2xl overflow-hidden rounded-lg border border-border-subtle bg-bg-surface"
+    class="card-hover group flex flex-col max-w-sm md:max-w-xl lg:max-w-2xl overflow-hidden rounded-lg border border-border-subtle bg-bg-surface cursor-pointer"
+    tabindex="0"
+    role="button"
+    @keydown.enter="$el.click()"
   >
     <!-- Imagen -->
     <div

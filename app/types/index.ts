@@ -61,3 +61,9 @@ export interface Feedback{
   email:string
   mensaje:string
 }
+
+export interface Email{
+  nombre:string
+  email:string
+  mensaje:string
+}
