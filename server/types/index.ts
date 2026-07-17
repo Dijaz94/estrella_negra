@@ -16,6 +16,19 @@ export type EventoPublic = {
   capacidad_max: number
 }
 
+export type EventoCreateInput = Omit<EventoPublic, 'id_evento'>
+
+export type EventoUpdateInput = {
+  titulo?: string
+  descripcion?: string
+  artistas?: string | null
+  fecha_inicio?: Date | string
+  fecha_fin?: Date | string | null
+  fecha_hora?: Date | string
+  afiche_url?: string | null
+  estado?: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
+  capacidad_max?: number
+}
 export interface BusinessInfo {
   id_configuracion: number
   nombre_local: string
