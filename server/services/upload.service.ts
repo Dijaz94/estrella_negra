@@ -1,8 +1,9 @@
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
 const MAX_SIZE = 5 * 1024 * 1024
-const BUCKET = 'estrella_negra_events'
+const BUCKET = 'estrella-negra-events'
 
 const EXT_MAP: Record<string, string> = {
+  'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png',
   'image/webp': 'webp',

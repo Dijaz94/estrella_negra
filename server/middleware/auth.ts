@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     return
   }
 
-  if (path === '/api/admin/auth/login') {
+  if (path === '/api/admin/auth/login' || path === '/api/admin/auth/logout') {
     return
   }
 

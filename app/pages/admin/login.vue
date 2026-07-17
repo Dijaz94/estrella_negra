@@ -28,6 +28,7 @@ async function handleSubmit() {
     await $fetch('/api/admin/auth/login', {
       method: 'POST',
       body: { correo: login?.email, password: login?.password },
+      credentials: 'include'
     })
     await navigateTo('/admin/dashboard')
   } catch (e: any) {

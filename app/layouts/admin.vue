@@ -1,7 +1,5 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'auth',
-})
+
 
 const route = useRoute()
 const isActive = (to:string)=>route.path===to
@@ -17,6 +15,11 @@ const navigationItems = [
 ]
 
 const { data: business } = useBusiness()
+
+async function handleLogout() {
+  await $fetch('/api/admin/auth/logout', { method: 'POST' })
+  await navigateTo('/admin/login')
+}
 
 </script>
 
@@ -45,13 +48,20 @@ const { data: business } = useBusiness()
       </NuxtLink>
 
 
-      <div class="mt-auto pt-4 border-t border-border-subtle">
+      <div class="mt-auto pt-4 border-t border-border-subtle flex flex-col gap-1">
         <NuxtLink
           to="/"
           class="block rounded px-3 py-2 text-sm text-text-muted hover:text-text-body transition-colors"
         >
           ← Volver al sitio
         </NuxtLink>
+        <UButton
+          @click="handleLogout"
+          class="block rounded px-3 py-2 text-left text-sm text-cta/70 hover:text-cta hover:bg-cta/5 transition-colors"
+          icon="i-lucide-logOut"
+        >
+          Cerrar sesión
+        </UButton>
       </div>
     </aside>
 

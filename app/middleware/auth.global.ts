@@ -3,11 +3,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
+  if (!to.path.startsWith('/admin')) {
+    return
+  }
+
   try {
-    const user = await $fetch('/api/auth/me')
-    if (!user) {
-      return navigateTo('/admin/login')
-    }
+    const headers = useRequestHeaders(['cookie'])
+    await $fetch('/api/auth/me', { headers })
   } catch {
     return navigateTo('/admin/login')
   }

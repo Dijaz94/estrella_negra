@@ -1,5 +1,9 @@
 import type { EventoCreateInput, EventoUpdateInput } from '../types'
 
+function parseTime(timeStr: string): Date {
+  const [hours, minutes] = timeStr.split(':').map(Number)
+  return new Date(1970, 0, 1, hours, minutes, 0, 0)
+}
 
 export async function getEvents(){
   const events = await prisma.evento.findMany({
@@ -27,7 +31,7 @@ export async function getAllEvents(){
   })
 }
 
-export async function createEvent(event: EventoCreateInput) {
+export async function createNewEvent(event: EventoCreateInput) {
   if (!event.titulo || !event.fecha_inicio || !event.fecha_hora || !event.descripcion || !event.capacidad_max) {
     throw createError({
       statusCode: 400,
@@ -35,14 +39,16 @@ export async function createEvent(event: EventoCreateInput) {
     })
   }
 
+  const fecha_fin = event.fecha_fin? new Date(event.fecha_fin) : null
+
   const created = await prisma.evento.create({
     data: {
       titulo: event.titulo,
       descripcion: event.descripcion,
-      fecha_inicio: event.fecha_inicio,
-      fecha_fin: event.fecha_fin,
-      fecha_hora: event.fecha_hora,
-      afiche_url: event.afiche_url,
+      fecha_inicio: new Date(event.fecha_inicio),
+      fecha_fin: fecha_fin,
+      fecha_hora: parseTime(event.fecha_hora),
+      afiche_url: event.afiche_url!,
       estado: event.estado,
       artistas: event.artistas,
       capacidad_max: event.capacidad_max,
@@ -72,6 +78,10 @@ export async function updateEvent(id: number, data: EventoUpdateInput) {
     }
   }
 
+  if (typeof prismaData.fecha_hora === 'string') {
+    prismaData.fecha_hora = parseTime(prismaData.fecha_hora)
+  }
+
   const updated = await prisma.evento.update({
     where: { id_evento: id },
     data: prismaData,
@@ -85,6 +95,30 @@ export async function deleteEvent(id: number) {
     throw createError({ statusCode: 400, statusMessage: 'ID no proporcionado' })
   }
 
+  // 1. Buscar el evento ANTES de borrar
+  const data = await prisma.evento.findUnique({
+    select: { afiche_url: true },
+    where: { id_evento: id },
+  })
+
+  // 2. Eliminar imagen de Supabase (si existe)
+  if (data?.afiche_url) {
+    try {
+      const BUCKET = 'estrella-negra-events'
+      const marker = `/object/public/${BUCKET}/`
+      const idx = data.afiche_url.indexOf(marker)
+      const path = idx !== -1 ? data.afiche_url.slice(idx + marker.length) : null
+
+      if (path) {
+        const { error } = await supabaseAdmin.storage.from(BUCKET).remove([path])
+        if (error) console.warn('No se pudo eliminar imagen:', error.message)
+      }
+    } catch (e) {
+      console.warn('Error al limpiar imagen:', e)
+    }
+  }
+
+  // 3. Eliminar el registro de Prisma
   const { count } = await prisma.evento.deleteMany({
     where: { id_evento: id },
   })
@@ -95,3 +129,5 @@ export async function deleteEvent(id: number) {
 
   return { ok: true }
 }
+
+  

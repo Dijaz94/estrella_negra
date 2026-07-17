@@ -1,23 +1,43 @@
 <script setup lang="ts">
-import type { EventoPublic } from '~/types';
+import type { EventoPublic } from '~/types'
 
 const props = defineProps<{
-evento: EventoPublic
+  evento: EventoPublic
+  showEstado?: boolean
+  showActions?: boolean
 }>()
 
+const emit = defineEmits<{
+  edit: [evento: EventoPublic]
+  delete: [evento: EventoPublic]
+}>()
+
+function estadoBadgeClass(estado: string) {
+  switch (estado) {
+    case 'PROGRAMADO':
+      return 'bg-brand-gold/15 text-brand-gold'
+    case 'CANCELADO':
+      return 'bg-red-500/15 text-red-400'
+    case 'FINALIZADO':
+      return 'bg-text-muted/15 text-text-muted'
+    default:
+      return ''
+  }
+}
 </script>
 
 <template>
-    <article
-    class="card-hover group flex flex-col max-w-sm md:max-w-xl lg:max-w-2xl overflow-hidden rounded-lg border border-border-subtle bg-bg-surface cursor-pointer"
-    tabindex="0"
-    role="button"
-    @keydown.enter="$el.click()"
+  <article
+    class="card-hover group flex flex-col overflow-hidden rounded-lg border border-border-subtle bg-bg-surface"
+    :class="{ 'cursor-pointer': !showActions }"
+    :tabindex="showActions ? undefined : 0"
+    :role="showActions ? undefined : 'button'"
+    v-bind="showActions ? {} : { '@keydown.enter': '$el.click()' }"
   >
     <!-- Imagen -->
     <div
       v-if="evento.afiche_url"
-      class="relative aspect-video overflow-hidden -cover"
+      class="relative aspect-video overflow-hidden"
     >
       <img
         :src="evento.afiche_url"
@@ -27,29 +47,36 @@ evento: EventoPublic
       />
       <div class="absolute inset-0 bg-linear-to-t from-bg-surface/60 to-transparent" />
     </div>
+    <div v-else class="flex h-32 items-center justify-center bg-bg-surface-alt">
+      <span class="font-display text-sm tracking-wider text-text-muted/40 uppercase">Sin afiche</span>
+    </div>
 
-    <!-- Fecha -->
-    <div
-      class="flex items-center gap-2 mx-5 mt-4"
-      :class="{ '-mt-10': evento.afiche_url }"
-    >
+    <!-- Fecha + Estado -->
+    <div class="flex items-center gap-2 mx-5 mt-4" :class="{ '-mt-10': evento.afiche_url }">
       <span class="inline-flex items-center gap-1.5 rounded bg-brand-gold/15 px-3 py-1 font-display text-sm tracking-wider text-brand-gold">
         <span class="text-xs">★</span>
         {{ formatFecha(evento.fecha_inicio) }}
+      </span>
+      <span
+        v-if="showEstado"
+        class="inline-flex items-center rounded px-3 py-1 font-display text-sm tracking-wider"
+        :class="estadoBadgeClass(evento.estado)"
+      >
+        {{ evento.estado }}
       </span>
     </div>
 
     <!-- Cuerpo -->
     <div class="flex flex-col gap-2 px-5 pb-5 pt-3">
-      <h3 class="font-display text-xl tracking-wider text-text-heading uppercase md:text-2xl">
+      <h3 class="font-display text-xl tracking-wider text-text-heading uppercase md:text-2xl line-clamp-2 h-18">
         {{ evento.titulo }}
       </h3>
 
       <p
-        v-if="evento.artistas"
+        
         class="font-body text-sm font-medium tracking-wide text-brand-gold-soft"
       >
-        {{ evento.artistas }}
+        {{ evento.artistas || '\u00A0' }}
       </p>
 
       <!-- Separador ☆ -->
@@ -59,7 +86,7 @@ evento: EventoPublic
         <span class="h-px flex-1 bg-border-subtle" />
       </div>
 
-      <p class="line-clamp-2 font-body text-sm leading-relaxed text-text-muted">
+      <p class="font-body text-sm leading-relaxed text-text-muted line-clamp-2 h-6">
         {{ evento.descripcion }}
       </p>
 
@@ -71,6 +98,12 @@ evento: EventoPublic
         <span class="flex items-center gap-1">
           ● Capacidad máxima: {{ evento.capacidad_max }} personas
         </span>
+      </div>
+
+      <!-- Acciones admin -->
+      <div v-if="showActions" class="flex items-center gap-2 pt-2 mt-auto">
+        <UButton label="Editar" variant="outline" size="sm" class="flex-1" @click.stop="emit('edit', evento)" />
+        <UButton label="Eliminar" color="error" variant="outline" size="sm" class="flex-1" @click.stop="emit('delete', evento)" />
       </div>
     </div>
   </article>

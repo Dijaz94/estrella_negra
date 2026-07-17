@@ -7,3 +7,18 @@ export function useEvent(id: Ref<number> | number) {
     key: `event-${unref(id)}`,
   })
 }
+
+export function useAdminEvents(){
+    return useFetch('/api/admin/events')
+}
+
+export async function createAdminEvent(data:Record<string, unknown>){
+  return await $fetch('/api/admin/events',{
+    method:'POST',
+    body:data
+  })
+}
+
+export async function deleteAdminEvent(id: number) {
+  return await $fetch(`/api/admin/events/${id}`, { method: 'DELETE' })
+}

@@ -34,7 +34,7 @@ artistas      String?  @db.VarChar(255)
 fecha_inicio DateTime @db.Date
 fecha_fin DateTime? @db.Date
 fecha_hora DateTime @db.Time
-afiche_url String? @db.VarChar(100)
+afiche_url String? @db.VarChar(255)
 estado EstadoEvento
 capacidad_max Int
 created_at DateTime @default(now())
