@@ -8,7 +8,8 @@ export function formatFecha(fecha?: string | Date | null) {
   return new Intl.DateTimeFormat('es-CL', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric'
+    year: 'numeric',
+    timeZone:'UTC'
   }).format(date)
 }
 

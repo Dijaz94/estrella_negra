@@ -29,7 +29,7 @@
 }
 
 html {
-  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 :root {
@@ -53,4 +53,8 @@ html {
   body {
     @apply bg-bg-base;
   }
+}
+
+@utility scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
 }

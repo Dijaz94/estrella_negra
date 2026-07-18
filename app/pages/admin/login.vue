@@ -40,9 +40,9 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-linear-to-br to-bg-base from-label-bg  p-4 w-full mx-auto">
+  <div class="flex min-h-screen items-center justify-center bg-linear-to-br to-bg-base from-label-bg  p-4 w-full mx-auto ">
     <div class="max-w-lg w-full">
-      <div class="rounded-lg border border-border-subtle bg-bg-surface p-12">
+      <div class="rounded-lg border border-border-subtle bg-bg-surface p-12 hero-fade-in">
         <h1 class="font-display mb-8 text-center text-2xl tracking-widest uppercase text-text-heading">
           Admin
         </h1>
@@ -70,3 +70,21 @@ async function handleSubmit() {
     </div>
   </div>
 </template>
+
+
+<style scoped>
+.hero-fade-in {
+  animation: hero-enter 0.6s ease-out both;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

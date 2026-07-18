@@ -99,6 +99,7 @@ async function handleSubmit() {
     }
 
     emit('submit', { ...form })
+    submitting.value = false
   } catch (e: any) {
     uploadError.value = e?.data?.message ?? 'Error al subir la imagen'
     submitting.value = false

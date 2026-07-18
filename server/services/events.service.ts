@@ -2,13 +2,17 @@ import type { EventoCreateInput, EventoUpdateInput } from '../types'
 
 function parseTime(timeStr: string): Date {
   const [hours, minutes] = timeStr.split(':').map(Number)
-  return new Date(1970, 0, 1, hours, minutes, 0, 0)
+  return new Date(Date.UTC(1970, 0, 1, hours, minutes, 0, 0))
 }
 
 export async function getEvents(){
+  const hoy = new Date
   const events = await prisma.evento.findMany({
-    where: { estado: 'PROGRAMADO' },
-    orderBy: { fecha_inicio: 'asc' },
+    where: { 
+      estado: 'PROGRAMADO',
+      fecha_inicio: {gt:hoy}
+     },
+    orderBy: { fecha_inicio: 'desc' },
   })
 
   return events
@@ -40,22 +44,28 @@ export async function createNewEvent(event: EventoCreateInput) {
   }
 
   const fecha_fin = event.fecha_fin? new Date(event.fecha_fin) : null
-
-  const created = await prisma.evento.create({
-    data: {
-      titulo: event.titulo,
-      descripcion: event.descripcion,
-      fecha_inicio: new Date(event.fecha_inicio),
-      fecha_fin: fecha_fin,
-      fecha_hora: parseTime(event.fecha_hora),
-      afiche_url: event.afiche_url!,
-      estado: event.estado,
-      artistas: event.artistas,
-      capacidad_max: event.capacidad_max,
-    },
-  })
-
-  return created
+  if(!event.afiche_url){
+    event.afiche_url= '/images/727190193_892900710516726_2377826526742107389_n.jpg'
+  }
+  try {
+    const created = await prisma.evento.create({
+      data: {
+        titulo: event.titulo,
+        descripcion: event.descripcion,
+        fecha_inicio: new Date(event.fecha_inicio),
+        fecha_fin: fecha_fin,
+        fecha_hora: parseTime(event.fecha_hora),
+        afiche_url: event.afiche_url!,
+        estado: event.estado,
+        artistas: event.artistas,
+        capacidad_max: event.capacidad_max,
+      },
+    })
+    return created
+  } catch (e: any) {
+    if (e.statusCode) throw e
+    throw createError({ statusCode: 500, message: 'Error al guardar el evento' })
+  }
 }
 
 
@@ -81,14 +91,26 @@ export async function updateEvent(id: number, data: EventoUpdateInput) {
   if (typeof prismaData.fecha_hora === 'string') {
     prismaData.fecha_hora = parseTime(prismaData.fecha_hora)
   }
+  if (typeof prismaData.fecha_inicio === 'string') {
+    prismaData.fecha_inicio = new Date(prismaData.fecha_inicio)
+  }
+  if (typeof prismaData.fecha_fin === 'string') {
+    prismaData.fecha_fin = new Date(prismaData.fecha_fin)
+  }
 
-  const updated = await prisma.evento.update({
-    where: { id_evento: id },
-    data: prismaData,
-  })
-
-  return updated
+  try {
+    const updated = await prisma.evento.update({
+      where: { id_evento: id },
+      data: prismaData,
+    })
+    return updated
+  } catch (e: any) {
+    if (e.statusCode) throw e
+    throw createError({ statusCode: 500, message: 'Error al actualizar el evento. Asegúrese de ingresar todos los datos.' })
+  }
 }
+
+
 
 export async function deleteEvent(id: number) {
   if (!id) {
@@ -119,12 +141,17 @@ export async function deleteEvent(id: number) {
   }
 
   // 3. Eliminar el registro de Prisma
-  const { count } = await prisma.evento.deleteMany({
-    where: { id_evento: id },
-  })
+  try {
+    const { count } = await prisma.evento.deleteMany({
+      where: { id_evento: id },
+    })
 
-  if (count === 0) {
-    throw createError({ statusCode: 404, statusMessage: 'Evento no encontrado' })
+    if (count === 0) {
+      throw createError({ statusCode: 404, statusMessage: 'Evento no encontrado' })
+    }
+  } catch (e: any) {
+    if (e.statusCode) throw e
+    throw createError({ statusCode: 500, message: 'Error al eliminar el evento' })
   }
 
   return { ok: true }

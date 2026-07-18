@@ -48,7 +48,7 @@ async function handleFormSubmit(data: Record<string, unknown>) {
   } catch (e: any) {
     toast.add({
       title: 'Error',
-      description: e?.data?.message ?? 'No se pudo guardar el evento',
+      description: getApiErrorMessage(e, 'No se pudo guardar el evento'),
       color: 'error',
     })
   } finally {

@@ -1,4 +1,4 @@
-import type { BusinessInfo, DiaHorario } from '~/types'
+import type { BusinessInfo, DiaHorario, NegocioUpdateInput } from '../types'
 
 export async function getBusinessInfo(): Promise<BusinessInfo | null> {
   const negocio = await prisma.negocio.findFirst({
@@ -25,3 +25,32 @@ export async function getBusinessInfo(): Promise<BusinessInfo | null> {
     })),
   }
 }
+
+const NULLABLE_FIELDS = ['logo_url', 'banner_url'] as const
+
+export async function updateBusinessInfo(data: NegocioUpdateInput) {
+  const existing = await prisma.negocio.findFirst()
+  if (!existing) {
+    throw createError({ statusCode: 404, statusMessage: 'Negocio no encontrado' })
+  }
+
+  const prismaData: Record<string, unknown> = { ...data }
+  for (const key of NULLABLE_FIELDS) {
+    if (key in prismaData && prismaData[key] === null) {
+      prismaData[key] = { set: null }
+    }
+  }
+
+  try {
+    const updated = await prisma.negocio.update({
+      where: { id_configuracion: existing.id_configuracion },
+      data: prismaData,
+    })
+    return updated
+  } catch (e: any) {
+    if (e.statusCode) throw e
+    throw createError({ statusCode: 500, message: 'Error al actualizar el negocio' })
+  }
+}
+
+

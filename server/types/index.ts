@@ -29,12 +29,19 @@ export type EventoUpdateInput = {
   estado?: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
   capacidad_max?: number
 }
+export interface DiaHorario {
+  dia: string
+  abierto: boolean
+  hora_apertura?: string
+  hora_cierre?: string
+}
+
 export interface BusinessInfo {
   id_configuracion: number
   nombre_local: string
   descripcion: string
   direccion: string
-  horario: string
+  horario: DiaHorario[]
   telefono: string
   whatsapp: string
   correo: string
@@ -47,6 +54,18 @@ export interface SocialLink {
   id_red: number
   nombre: string
   red_url: string
+}
+
+export type NegocioUpdateInput = {
+  nombre_local?: string
+  descripcion?: string
+  direccion?: string
+  horario?: unknown
+  telefono?: string
+  whatsapp?: string
+  correo?: string
+  logo_url?: string | null
+  banner_url?: string | null
 }
 
 export interface MenuItem {
