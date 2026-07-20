@@ -19,9 +19,9 @@ export function verifyPassword(password: string, stored: string): boolean {
 }
 
 export function createToken(payload: Omit<TokenPayload, 'exp'>): string {
-  const exp = Date.now() + TOKEN_EXPIRY
-  const data = JSON.stringify({ ...payload, exp })
-  const signature = createHash('sha256')
+  const exp = Date.now() + TOKEN_EXPIRY //tomamos la validez del token en milisegundos
+  const data = JSON.stringify({ ...payload, exp }) //tomamos todo lo que se ingresa en el payload, y le agregamos la nueva expiración del token
+  const signature = createHash('sha256') 
     .update(data + TOKEN_SECRET)
     .digest('hex')
   return Buffer.from(`${data}.${signature}`).toString('base64url')

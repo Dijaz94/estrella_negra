@@ -7,7 +7,7 @@ const loginSchema = z.object({
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const parsed = loginSchema.safeParse(body)
+  const parsed = loginSchema.safeParse(body) //verificamos que  se ingresó correo y contraseña
 
   if (!parsed.success) {
     throw createError({
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
   const { correo, password } = parsed.data
 
-  const user = await prisma.usuario.findUnique({
+  const user = await prisma.usuario.findUnique({ //consulta base de datos
     where: { correo },
   })
 
@@ -27,10 +27,10 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!user.activo) {
-    throw createError({ statusCode: 401, message: 'Usuario inactivo' })
+    throw createError({ statusCode: 401, message: 'Cuenta inactiva' })
   }
 
-  const token = createToken({ userId: user.id_usuario, role: user.rol })
+  const token = createToken({ userId: user.id_usuario, role: user.rol }) //creamos el token
 
   setCookie(event, 'auth_token', token, {
     httpOnly: true,
