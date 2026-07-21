@@ -3,9 +3,9 @@ export  default defineEventHandler(async(event)=>{
      const body = await readBody(event)
 
     const schema = z.object({
-        nombre: z.string().min(1),
-        email:z.email(),
-        mensaje:z.string().min(1)
+        nombre: z.string().min(1, 'El nombre es obligatorio'),
+        email:z.email('El correo es obligatorio'),
+        mensaje:z.string().min(1, 'Debes ingresar un mensaje para enviar el formulario')
     })
 
     const parsed = schema.safeParse(body)

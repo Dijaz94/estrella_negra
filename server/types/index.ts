@@ -111,7 +111,7 @@ export interface ProductoUpdateInput {
   nombre?: string
   descripcion?: string
   precio?: number
-  imagen_url?: string | null
+  imagen_url: string | null
   disponible?: boolean
   destacado?: boolean
 }

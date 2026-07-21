@@ -1,5 +1,5 @@
 import type { CategoryItem } from '~/types'
-import { CategoriaCreateInput, CategoriaUpdateInput } from '../types'
+import { CategoriaCreateInput, CategoriaUpdateInput, ProductoCreateInput, ProductoUpdateInput } from '../types'
 import { deleteFromSupabase } from './upload.service'
 
 export async function getMenu(): Promise<CategoryItem[]> {
@@ -53,19 +53,18 @@ export async function updateCategory(event: CategoriaUpdateInput, id:number){
   if(!event || !id){
     throw createError({
       statusCode:400,
-      statusMessage:'Faltan datos para actualizar'
+      statusMessage:'Datos incompletos'
     })
   }
 
-
-  const updated = prisma.categoria.update({
+  const prismaData = {...event}
+  const updated = await prisma.categoria.update({
       where:{
         id_categoria: id
       },
-      data:{
-        data: {...event}
-      }
-
+      data:
+        prismaData
+      
     })
     return updated
 }
@@ -94,14 +93,86 @@ export async function deleteCategory( id:number){
 
 }
 
-export async function  createProduct(){
+
+export async function  createProduct(event: ProductoCreateInput){
+if (!event || !event.nombre || !event.precio || !event.id_categoria || !event.descripcion){
+  throw createError({
+    statusCode: 400,
+    statusMessage: 'Datos incompletos'
+  })
+}
+
+  const url = event.imagen_url ? event.imagen_url:'/images/default_event.jpg'
+  const created = await prisma.producto.create({
+    data:{
+      nombre:event.nombre,
+      descripcion:event.descripcion,
+      precio:event.precio,
+      id_categoria:event.id_categoria,
+      imagen_url: url,
+      disponible: event.disponible,
+      destacado: event.destacado
+    }
+  })
+
+  return created
+}
+
+export async function updateProduct(product:ProductoUpdateInput, id:number){
+    if (!id) {
+    throw createError({ statusCode: 400, statusMessage: 'ID requerido' })
+  }
+
+  const existing = await prisma.producto.findUnique({
+    where:{id_producto:id}
+  })
+  if (!existing){
+    throw createError({
+      statusCode: 404,
+      statusMessage:'Producto no encontrado'
+    })
+  }
+  const prismaData: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(product)) {
+    if (value !== undefined) {
+      prismaData[key] = value
+    }
+  }
+
+  if (Object.keys(prismaData).length === 0) {
+    throw createError({ statusCode: 400, statusMessage: 'Sin cambios' })
+  }
+
+  if (product.imagen_url === null && existing.imagen_url) {
+    await deleteFromSupabase(existing.imagen_url)
+  }
+
+  return await prisma.producto.update({
+    where: { id_producto: id },
+    data: prismaData,
+  })
 
 }
 
-export async function updateProduct(){
+export async function deleteProduct(id:number){
+  const producto = await prisma.producto.findUnique({
+    where:{id_producto:id}
 
-}
+  })
 
-export async function deleteProduct(){
+  if (!producto){
+    throw createError({
+      statusCode: 404,
+      statusMessage:'Producto no encontrado'
+    })
+  }
 
+  if (producto.imagen_url){
+    await deleteFromSupabase(producto.imagen_url)
+  }
+
+  await prisma.producto.delete({
+    where:{id_producto: producto.id_producto}
+  })
+  return {ok:true}
 }
