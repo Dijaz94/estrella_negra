@@ -19,6 +19,7 @@ export async function getMenu(): Promise<CategoryItem[]> {
     orden: cat.orden,
     productos: cat.productos.map((p) => ({
       id_producto: p.id_producto,
+      id_categoria: p.id_categoria,
       nombre: p.nombre,
       descripcion: p.descripcion,
       precio: p.precio,

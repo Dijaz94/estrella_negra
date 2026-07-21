@@ -40,6 +40,7 @@ export interface SocialLink {
 
 export interface MenuItem {
   id_producto: number
+  id_categoria: number
   nombre: string
   descripcion: string
   precio: number
