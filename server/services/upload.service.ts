@@ -47,3 +47,26 @@ export async function uploadImage(
 
   return publicData.publicUrl
 }
+
+export async function deleteFromSupabase(url:string){
+  const marker = `/object/public/${BUCKET}/`
+  const idx = url.indexOf(marker)
+  const path = idx !== -1 ? url.slice(idx + marker.length) : null
+  if (path) {
+    const { error } = await supabaseAdmin.storage.from(BUCKET).remove([path])
+    if (error){
+      throw createError({
+        statusCode:500,
+        statusMessage:'No se pudo eliminar la imagen'
+      })
+    } 
+  }
+  else{
+    throw createError({
+        statusCode:404,
+        statusMessage:'Imagen no encontrada'
+      })
+  }
+  return {ok:true}
+}
+
