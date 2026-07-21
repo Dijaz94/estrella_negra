@@ -45,7 +45,7 @@ export async function createNewEvent(event: EventoCreateInput) {
 
   const fecha_fin = event.fecha_fin? new Date(event.fecha_fin) : null
   if(!event.afiche_url){
-    event.afiche_url= '/images/727190193_892900710516726_2377826526742107389_n.jpg'
+    event.afiche_url= '/images/default_event.jpg'
   }
   try {
     const created = await prisma.evento.create({

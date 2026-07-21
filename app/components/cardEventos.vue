@@ -36,7 +36,7 @@ function estadoBadgeClass(estado: string) {
   >
     <!-- Imagen -->
     <div
-      v-if="evento.afiche_url"
+      
       class="relative aspect-video overflow-hidden"
     >
       <img
@@ -47,9 +47,7 @@ function estadoBadgeClass(estado: string) {
       />
       <div class="absolute inset-0 bg-linear-to-t from-bg-surface/60 to-transparent" />
     </div>
-    <div v-else class="flex h-32 items-center justify-center bg-bg-surface-alt">
-      <span class="font-display text-sm tracking-wider text-text-muted/40 uppercase">Sin afiche</span>
-    </div>
+
 
     <!-- Fecha + Estado -->
     <div class="flex items-center gap-2 mx-5 mt-4" :class="{ '-mt-10': evento.afiche_url }">

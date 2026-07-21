@@ -85,3 +85,33 @@ export interface CategoryItem {
   orden: number
   productos: MenuItem[]
 }
+
+export interface CategoriaCreateInput {
+  nombre: string
+  orden: number
+}
+
+export interface CategoriaUpdateInput {
+  nombre?: string
+  orden?: number
+}
+
+export interface ProductoCreateInput {
+  id_categoria: number
+  nombre: string
+  descripcion: string
+  precio: number
+  imagen_url?: string | null
+  disponible?: boolean
+  destacado?: boolean
+}
+
+export interface ProductoUpdateInput {
+  id_categoria?: number
+  nombre?: string
+  descripcion?: string
+  precio?: number
+  imagen_url?: string | null
+  disponible?: boolean
+  destacado?: boolean
+}
