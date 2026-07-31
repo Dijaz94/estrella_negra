@@ -12,6 +12,12 @@ const emit = defineEmits<{
   delete: [evento: EventoPublic]
 }>()
 
+const el = ref<HTMLElement | null>(null)
+
+function onKeydownEnter() {
+  if (!showActions) el.value?.click()
+}
+
 function estadoBadgeClass(estado: string) {
   switch (estado) {
     case 'PROGRAMADO':
@@ -28,11 +34,12 @@ function estadoBadgeClass(estado: string) {
 
 <template>
   <article
+    ref="el"
     class="card-hover group flex flex-col overflow-hidden rounded-lg border border-border-subtle bg-bg-surface"
     :class="{ 'cursor-pointer': !showActions }"
     :tabindex="showActions ? undefined : 0"
     :role="showActions ? undefined : 'button'"
-    v-bind="showActions ? {} : { '@keydown.enter': '$el.click()' }"
+    @keydown.enter="onKeydownEnter"
   >
     <!-- Imagen -->
     <div
