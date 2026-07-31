@@ -33,4 +33,12 @@ export default defineNuxtConfig({
   routeRules: {
     '/admin/**': { ssr: false },
   },
+  app: {
+    head: {
+      title: 'Estrella Negra',
+      titleTemplate: '%s · Estrella Negra',
+    },
+  },
+
 })
+
