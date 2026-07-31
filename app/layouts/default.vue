@@ -29,6 +29,9 @@ const { data: business } = useBusiness()
           <span v-else>{{ business?.nombre_local ?? 'Estrella Negra' }}</span>
         </NuxtLink>
 
+        <span
+          class="inline-flex items-center rounded bg-red-600/80 px-1.5 py-0.5 font-mono text-[9px] text-white"
+        >DEBUG</span>
         <nav class="flex items-center gap-6 text-sm tracking-wider uppercase">
           <NuxtLink v-for="page in navigationItems" :key="page.to" :to="page.to" class="hover:text-brand-gold transition-colors p-2" :class="isActive(page.to)?'border-b-2 border-brand-gold':''">
             {{ page.label }}
