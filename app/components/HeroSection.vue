@@ -35,7 +35,7 @@ const hoy = computed(() => horarioDeHoy(props.business.horario))
         <span class="h-px w-12 bg-brand-gold/60 md:w-20" />
       </div>
 
-      <p class="mx-auto max-w-xl px-4 text-base leading-relaxed text-text-muted md:text-lg">
+      <p class="mx-auto max-w-xl px-4 text-lg leading-relaxed text-text-muted md:text-lg">
         {{ business.descripcion }}
       </p>
 
@@ -60,13 +60,13 @@ const hoy = computed(() => horarioDeHoy(props.business.horario))
         </a>
       </div>
 
-      <div class="mt-8 flex items-center justify-center gap-4 text-sm  text-text-muted md:text-base">
-        <span v-if="business.direccion" class="flex items-center gap-1.5">
-          📍 {{ business.direccion }}
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 text-sm  text-text-muted md:text-base">
+        <span v-if="business.direccion" class="flex items-center gap-1.5 text-base">
+          📍 {{ business.direccion }} 
         </span>
         <span
           v-if="business.horario?.length"
-          class="flex items-center gap-1.5"
+          class="flex items-center gap-1.5 text-base"
           :class="{ 'text-brand-gold': hoy && hoy.abierto }"
         >
           <span

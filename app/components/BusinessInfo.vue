@@ -56,7 +56,7 @@ function esHoy(dia: string): boolean {
           </span>
           <span
             v-else
-            class="text-lg tracking-wider uppercase text-red-400"
+            class="text-sm tracking-widest uppercase"
           >
             Cerrado
           </span>
