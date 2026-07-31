@@ -40,7 +40,7 @@ function estadoBadgeClass(estado: string) {
       class="relative aspect-video overflow-hidden"
     >
       <img
-        :src="evento.afiche_url"
+        :src="evento.afiche_url || undefined"
         :alt="evento.titulo"
         class="h-full w-full object-cover transition duration-500 group-hover:scale-105 border-2 border-brand-gold-soft rounded-lg"
         loading="lazy"

@@ -1,4 +1,5 @@
-import type { BusinessInfo, DiaHorario, NegocioUpdateInput } from '../types'
+import { parseHorario } from '../utils/horario'
+import type { BusinessInfo, NegocioUpdateInput } from '../types'
 
 export async function getBusinessInfo(): Promise<BusinessInfo | null> {
   const negocio = await prisma.negocio.findFirst({
@@ -9,9 +10,7 @@ export async function getBusinessInfo(): Promise<BusinessInfo | null> {
 
   if (!negocio) return null
 
-  const horario: DiaHorario[] = typeof negocio.horario === 'string'
-    ? JSON.parse(negocio.horario)
-    : (negocio.horario as DiaHorario[])
+  const horario = parseHorario(negocio.horario)
 
   return {
     ...negocio,

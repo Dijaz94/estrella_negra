@@ -1,8 +1,25 @@
+import type { eventoModel } from '../../app/generated/prisma/models'
+import type { EventoPublic } from '~/types'
 import type { EventoCreateInput, EventoUpdateInput } from '../types'
 
 function parseTime(timeStr: string): Date {
   const [hours, minutes] = timeStr.split(':').map(Number)
   return new Date(Date.UTC(1970, 0, 1, hours, minutes, 0, 0))
+}
+
+function mapEventoPublic(e: eventoModel): EventoPublic {
+  return {
+    id_evento: e.id_evento,
+    titulo: e.titulo,
+    descripcion: e.descripcion,
+    artistas: e.artistas,
+    fecha_inicio: e.fecha_inicio.toISOString(),
+    fecha_fin: e.fecha_fin ? e.fecha_fin.toISOString() : null,
+    fecha_hora: e.fecha_hora.toISOString(),
+    afiche_url: e.afiche_url ?? '',
+    estado: e.estado,
+    capacidad_max: e.capacidad_max,
+  }
 }
 
 export async function getEvents(){
@@ -15,7 +32,7 @@ export async function getEvents(){
     orderBy: { fecha_inicio: 'desc' },
   })
 
-  return events
+  return events.map(mapEventoPublic)
 }
 
 export async function getEventById(id: number){
@@ -23,16 +40,18 @@ export async function getEventById(id: number){
     where: { id_evento: id },
   })
 
-  return event
+  return event ? mapEventoPublic(event) : null
 }
 
 
 export async function getAllEvents(){
-  return await prisma.evento.findMany({
+  const events = await prisma.evento.findMany({
     orderBy:{fecha_inicio:'desc'}
 
     
   })
+
+  return events.map(mapEventoPublic)
 }
 
 export async function createNewEvent(event: EventoCreateInput) {

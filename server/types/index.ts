@@ -60,7 +60,7 @@ export type NegocioUpdateInput = {
   nombre_local?: string
   descripcion?: string
   direccion?: string
-  horario?: unknown
+  horario?: DiaHorario[]
   telefono?: string
   whatsapp?: string
   correo?: string

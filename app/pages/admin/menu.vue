@@ -222,7 +222,7 @@ function deleteCategory(cat: CategoryItem | undefined) {
 const deleteDescription = computed(() => {
   if (!deleteTarget.value) return ''
   if (deleteTarget.value.type === 'category') {
-    const count = (deleteTarget.value.item as CategoryItem).productos?.length ?? 0
+    const count = deleteTarget.value.item.productos?.length ?? 0
     return count > 0
       ? `Se eliminarán ${count} producto(s) asociados a esta categoría.`
       : 'Esta categoría no tiene productos asociados.'

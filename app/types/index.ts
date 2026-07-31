@@ -6,7 +6,7 @@ export interface EventoPublic {
   fecha_inicio: string
   fecha_fin: string | null
   fecha_hora: string
-  afiche_url: string
+  afiche_url: string | null
   estado: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
   capacidad_max: number
 }
