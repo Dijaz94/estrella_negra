@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ProductoUpdateInput } from '~~/server/types'
+import type { ProductoUpdateInput } from '~~/server/types'
 
 export default defineEventHandler(async (event) => {
   const id = Number(event.context.params?.id)

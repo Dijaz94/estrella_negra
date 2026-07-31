@@ -1,6 +1,28 @@
-import type { CategoryItem } from '~/types'
-import { CategoriaCreateInput, CategoriaUpdateInput, ProductoCreateInput, ProductoUpdateInput } from '../types'
+import type { Prisma } from '../../app/generated/prisma/client'
+import type { CategoryItem, MenuItem } from '~/types'
+import type { CategoriaCreateInput, CategoriaUpdateInput, ProductoCreateInput, ProductoUpdateInput } from '../types'
 import { deleteFromSupabase } from './upload.service'
+
+type CategoriaConProductos = Prisma.categoriaGetPayload<{ include: { productos: true } }>
+
+function mapCategoria(cat: CategoriaConProductos): CategoryItem {
+  return {
+    id_categoria: cat.id_categoria,
+    nombre: cat.nombre,
+    orden: cat.orden,
+    productos: cat.productos.map((p): MenuItem => ({
+      id_producto: p.id_producto,
+      id_categoria: p.id_categoria,
+      nombre: p.nombre,
+      descripcion: p.descripcion,
+      precio: p.precio,
+      imagen_url: p.imagen_url ?? '',
+      disponible: p.disponible,
+      destacado: p.destacado,
+      categoria: cat.nombre,
+    })),
+  }
+}
 
 export async function getMenu(): Promise<CategoryItem[]> {
   const categorias = await prisma.categoria.findMany({
@@ -13,30 +35,17 @@ export async function getMenu(): Promise<CategoryItem[]> {
     },
   })
 
-  return categorias.map((cat) => ({
-    id_categoria: cat.id_categoria,
-    nombre: cat.nombre,
-    orden: cat.orden,
-    productos: cat.productos.map((p) => ({
-      id_producto: p.id_producto,
-      id_categoria: p.id_categoria,
-      nombre: p.nombre,
-      descripcion: p.descripcion,
-      precio: p.precio,
-      imagen_url: p.imagen_url ?? '',
-      disponible: p.disponible,
-      destacado: p.destacado,
-      categoria: cat.nombre,
-    })),
-  }))
+  return categorias.map(mapCategoria)
 }
 
 
-export async function getAllCategoriesAdmin(){
-  return await prisma.categoria.findMany({
-    orderBy: {orden:'asc'},
-    include: {productos:true}
+export async function getAllCategoriesAdmin(): Promise<CategoryItem[]> {
+  const categorias = await prisma.categoria.findMany({
+    orderBy: { orden: 'asc' },
+    include: { productos: true },
   })
+
+  return categorias.map(mapCategoria)
 }
 
 export async function  createCategory(event: CategoriaCreateInput){

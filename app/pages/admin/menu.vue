@@ -25,13 +25,7 @@ const deleteTarget = ref<DeleteTarget | null>(null)
 const loading = ref(false)
 
 const allProducts = computed(() =>
-  categories.value?.flatMap((c) =>
-    c.productos.map((p) => ({
-      ...p,
-      categoria: c.nombre,
-      id_categoria: c.id_categoria,
-    }))
-  ) ?? []
+  categories.value?.flatMap((c) => c.productos) ?? []
 )
 
 function openCreateCategory() {
@@ -117,10 +111,10 @@ async function handleDelete() {
   loading.value = true
   try {
     if (deleteTarget.value.type === 'category') {
-      await deleteAdminCategory(deleteTarget.value.item.id_categoria!)
+      await deleteAdminCategory(deleteTarget.value.item.id_categoria)
       toast.add({ title: 'Categoría eliminada', color: 'success' })
     } else {
-      await deleteAdminProduct((deleteTarget.value.item as MenuItem).id_producto)
+      await deleteAdminProduct(deleteTarget.value.item.id_producto)
       toast.add({ title: 'Producto eliminado', color: 'success' })
     }
     showDeleteModal.value = false
@@ -255,7 +249,7 @@ const deleteDescription = computed(() => {
       <h2 class="font-display text-lg tracking-wider uppercase text-text-heading mb-4">
         Categorías
       </h2>
-      <UAccordion type="multiple" :items="(categories as CategoryItem[]).map((c: CategoryItem) => ({
+      <UAccordion type="multiple" :items="(categories).map((c) => ({
         label: `${c.nombre} (${c.productos?.length ?? 0})`,
         value: String(c.id_categoria),
       }))">
