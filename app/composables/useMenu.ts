@@ -7,7 +7,7 @@ export function useMenu() {
 }
 
 export function useAdminMenu(){
-  const data = useFetch('/api/admin/menu/categorias')
+  const data = useFetch('/api/admin/menu/categorias', {server:false})
   return data
 }
 

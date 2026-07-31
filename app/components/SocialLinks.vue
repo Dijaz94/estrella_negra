@@ -7,9 +7,9 @@ defineProps<{
 </script>
 
 <template>
-  <section>
+  <section class=" bg-bg-surface p-4 rounded-2xl border border-border-strong">
     <h2 class="font-display mb-6 text-center text-lg tracking-widest uppercase text-brand-gold md:text-xl">
-      Síguenos
+      Síguenos en nuestras redes sociales
     </h2>
     <div class="flex flex-wrap justify-center gap-3">
       <a

@@ -46,6 +46,7 @@ const form = reactive({
 })
 
 const horario = ref<DiaHorario[]>([])
+const redes = ref<Array<{ id_red?: number; nombre: string; red_url: string }>>([])
 
 watch(negocio, (val) => {
   if (!val) return
@@ -58,6 +59,7 @@ watch(negocio, (val) => {
   form.logo_url = val.logo_url || null
   form.banner_url = val.banner_url || null
   horario.value = val.horario.map(d => ({ ...d }))
+  redes.value = (val.redes ?? []).map(r => ({ ...r }))
 }, { immediate: true })
 
 const logoPreview = computed(() => form.logo_url)
@@ -94,6 +96,7 @@ async function handleSubmit() {
       body: {
         ...form,
         horario: horario.value,
+        redes: redes.value,
       },
     })
     toast.add({ title: 'Negocio actualizado', color: 'success' })
@@ -160,7 +163,7 @@ async function handleSubmit() {
                 <UInput v-model="form.telefono" placeholder="+56 9 ..." class="w-full" />
               </UFormField>
 
-              <UFormField label="WhatsApp" name="whatsapp">
+              <UFormField label="WhatsApp (569XXXXXXXX)" name="whatsapp">
                 <UInput v-model="form.whatsapp" placeholder="569..." class="w-full" />
               </UFormField>
 
@@ -281,8 +284,8 @@ async function handleSubmit() {
                 variant="outline"
                 size="xs"
                 class="mt-2"
-                @click="()=>{form.banner_url = null}"</UButton>
-              
+                @click="()=>{form.banner_url = null}"
+              />
             </div>
             <UButton
               v-else
@@ -293,6 +296,34 @@ async function handleSubmit() {
             />
           </div>
         </div>
+      </section>
+
+      <!-- Redes sociales -->
+      <section class="flex flex-col gap-4 rounded-xl border border-border-subtle bg-bg-surface p-5">
+        <h2 class="font-display text-sm uppercase tracking-widest text-text-muted">
+          Redes sociales
+        </h2>
+
+        <div v-for="(red, i) in redes" :key="i" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <UInput v-model="red.nombre" placeholder="Nombre (Instagram, Facebook...)" class="w-full sm:w-40" />
+          <UInput v-model="red.red_url" placeholder="https://..." class="flex-1" />
+          <UButton
+            icon="i-lucide-trash-2"
+            color="error"
+            variant="outline"
+            size="sm"
+            class="shrink-0"
+            @click="() => { redes.splice(i, 1) }"
+          />
+        </div>
+
+        <UButton
+          label="+ Agregar red"
+          variant="outline"
+          size="sm"
+          icon="i-lucide-plus"
+          @click="() => { redes.push({ nombre: '', red_url: '' }) }"
+        />
       </section>
     </UForm>
   </div>

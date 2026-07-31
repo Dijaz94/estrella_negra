@@ -50,6 +50,11 @@ export interface BusinessInfo {
   redes: SocialLink[]
 }
 
+export interface SocialLinkInput {
+  nombre: string
+  red_url: string
+}
+
 export interface SocialLink {
   id_red: number
   nombre: string
@@ -66,6 +71,7 @@ export type NegocioUpdateInput = {
   correo?: string
   logo_url?: string | null
   banner_url?: string | null
+  redes?: SocialLinkInput[]
 }
 
 export interface MenuItem {

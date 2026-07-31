@@ -9,7 +9,7 @@ export function useEvent(id: Ref<number> | number) {
 }
 
 export function useAdminEvents(){
-    return useFetch('/api/admin/events')
+    return useFetch('/api/admin/events', { server: false })
 }
 
 export async function createAdminEvent(data:Record<string, unknown>){

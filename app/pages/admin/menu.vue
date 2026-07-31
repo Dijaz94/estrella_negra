@@ -7,7 +7,7 @@ definePageMeta({
   layout: 'admin'
 })
 
-const { data: categories, refresh } = useAdminMenu()
+const { data: categories, pending, error,  refresh } = useAdminMenu()
 const toast = useToast()
 
 const showCategoryModal = ref(false)
@@ -24,8 +24,12 @@ const deleteTarget = ref<DeleteTarget | null>(null)
 
 const loading = ref(false)
 
-const allProducts = computed(() =>
-  categories.value?.flatMap((c) => c.productos) ?? []
+const accordionItems = computed(() =>
+  (categories.value ?? []).map((c) => ({
+    label: `${c.nombre} (${c.productos?.length ?? 0})`,
+    value: String(c.id_categoria),
+    category: c,
+  }))
 )
 
 function openCreateCategory() {
@@ -135,7 +139,7 @@ const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 
-const columns: TableColumn<MenuItem>[] = [
+const productColumns: TableColumn<MenuItem>[] = [
   {
     accessorKey: 'imagen_url',
     header: '',
@@ -152,11 +156,6 @@ const columns: TableColumn<MenuItem>[] = [
   {
     accessorKey: 'nombre',
     header: 'Nombre',
-  },
-  {
-    accessorKey: 'categoria',
-    header: 'Categoría',
-    cell: ({ row }) => h(UBadge, { variant: 'subtle', color: 'primary' }, () => row.original.categoria),
   },
   {
     accessorKey: 'precio',
@@ -205,20 +204,6 @@ const columns: TableColumn<MenuItem>[] = [
   },
 ]
 
-function findCategoryById(id: string | number) {
-  return categories.value?.find(c => c.id_categoria === Number(id))
-}
-
-function editCategory(cat: CategoryItem | undefined) {
-  if (!cat) return
-  openEditCategory(cat)
-}
-
-function deleteCategory(cat: CategoryItem | undefined) {
-  if (!cat) return
-  openDeleteCategory(cat)
-}
-
 const deleteDescription = computed(() => {
   if (!deleteTarget.value) return ''
   if (deleteTarget.value.type === 'category') {
@@ -234,74 +219,70 @@ const deleteDescription = computed(() => {
 <template>
   <div>
     <!-- Header -->
-    <div class="mb-6 flex items-center justify-between">
+    <div class="mb-6 flex items-center justify-between gap-2">
       <h1 class="font-display text-2xl tracking-wider uppercase text-text-heading">
         Menú
       </h1>
-      <div class="flex gap-3">
+      <div class="flex gap-1">
         <UButton label="+ Crear categoría" variant="outline" @click="openCreateCategory" />
         <UButton label="+ Crear producto" @click="openCreateProduct" />
       </div>
     </div>
 
     <!-- Categorías -->
-    <section v-if="categories?.length" class="mb-10">
+    <section v-if="categories?.length">
       <h2 class="font-display text-lg tracking-wider uppercase text-text-heading mb-4">
         Categorías
       </h2>
-      <UAccordion type="multiple" :items="(categories).map((c) => ({
-        label: `${c.nombre} (${c.productos?.length ?? 0})`,
-        value: String(c.id_categoria),
-      }))">
+      <UAccordion
+        type="multiple"
+        :items="accordionItems"
+        :default-value="[String(categories[0]?.id_categoria)]"
+      >
         <template #body="{ item }">
-          <div class="flex justify-end gap-2 pb-2">
-            <UButton
-              label="Editar"
-              variant="outline"
-              size="xs"
-              icon="i-lucide-pencil"
-              @click="editCategory(findCategoryById(item.value))"
+          <div class="flex flex-col gap-3 pb-3">
+            <div class="flex justify-end gap-2">
+              <UButton
+                label="Editar"
+                variant="outline"
+                size="xs"
+                icon="i-lucide-pencil"
+                @click="openEditCategory(item.category)"
+              />
+              <UButton
+                label="Eliminar"
+                variant="outline"
+                color="error"
+                size="xs"
+                icon="i-lucide-trash-2"
+                @click="openDeleteCategory(item.category)"
+              />
+            </div>
+            <UTable
+              v-if="item.category.productos?.length"
+              :data="item.category.productos"
+              :columns="productColumns"
             />
-            <UButton
-              label="Eliminar"
-              variant="outline"
-              color="error"
-              size="xs"
-              icon="i-lucide-trash-2"
-              @click="deleteCategory(findCategoryById(item.value))"
-            />
+            <p v-else class="text-sm text-text-muted/60">
+              Sin productos en esta categoría.
+            </p>
           </div>
-          <p v-if="!findCategoryById(item.value)?.productos?.length" class="text-sm text-text-muted/60 pb-2">
-            Sin productos en esta categoría.
-          </p>
         </template>
       </UAccordion>
     </section>
 
+    <div v-if="pending" class="py-8 text-center mb-10">
+      <p class="font-display text-lg tracking-wider text-text-muted uppercase">
+        Cargando categorías y productos...
+      </p>
+    </div>
+
     <!-- Empty state categorías -->
-    <div v-else class="py-8 text-center mb-10">
+    <div v-if="error || categories?.length === 0" class="py-8 text-center mb-10">
       <p class="font-display text-lg tracking-wider text-text-muted uppercase">
         No hay categorías creadas aún
       </p>
     </div>
-
-    <!-- Productos -->
-    <section>
-      <h2 class="font-display text-lg tracking-wider uppercase text-text-heading mb-4">
-        Productos
-      </h2>
-      <UTable
-        v-if="allProducts.length"
-        :data="allProducts"
-        :columns="columns"
-        class="flex-1"
-      />
-      <div v-else class="py-8 text-center">
-        <p class="font-display text-lg tracking-wider text-text-muted uppercase">
-          No hay productos creados aún
-        </p>
-      </div>
-    </section>
 
     <!-- Modal categoría -->
     <UModal

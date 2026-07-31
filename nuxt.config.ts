@@ -29,4 +29,8 @@ export default defineNuxtConfig({
       dirs: ['server/services', 'server/utils'],
     },
   },
+
+  routeRules: {
+    '/admin/**': { ssr: false },
+  },
 })

@@ -29,7 +29,7 @@ const schema = z.object({
         <UFormField label="Correo" name="email">
             <UInput class=" w-full" v-model="feedback.email" />
         </UFormField>
-        <UFormField label="Deja aquí tu mensaje de retroalimentación" name="mensaje">
+        <UFormField label="Escribe aquí tu experiencia en el local" name="mensaje">
             <UTextarea class="h-full w-full" v-model="feedback.mensaje" />
         </UFormField>
 

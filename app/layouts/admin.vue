@@ -12,7 +12,6 @@ const navigationItems = [
     {label:'Eventos', to:'/admin/eventos'},
     {label:'Menú', to:'/admin/menu'},
     {label:'Negocio', to:'/admin/negocio'},
-    {label:'Redes Sociales', to:'/admin/redes'},
     {label:'Usuarios', to:'/admin/usuarios'},
 ]
 
@@ -32,7 +31,7 @@ async function handleLogout() {
       class="fixed top-4 left-4 z-50 rounded-lg border border-border-subtle bg-bg-surface p-2 sm:hidden"
       @click="isSidebarOpen = !isSidebarOpen"
     >
-      <i-lucide-menu class="size-5 text-text-heading" />
+      <UIcon name="i-lucide-menu" />
     </button>
 
     <!-- Backdrop mobile -->
@@ -78,8 +77,8 @@ async function handleLogout() {
         </NuxtLink>
         <UButton
           @click="handleLogout"
-          class="block rounded px-3 py-2 text-left text-sm text-cta/70 hover:text-cta hover:bg-cta/5 transition-colors"
-          icon="i-lucide-logOut"
+          class="flex rounded text-left text-sm text-cta/70 hover:text-cta hover:bg-cta/5 transition-colors items-center"
+          icon="i-lucide-log-out"
         >
           Cerrar sesión
         </UButton>

@@ -99,7 +99,7 @@ onUnmounted(() => observer?.disconnect())
 
       <div
         v-if="filteredCategorias.length > 1"
-        class="flex items-center justify-center gap-6 overflow-x-auto text-sm tracking-widest uppercase"
+        class="flex items-center justify-[safe_center] gap-6 overflow-x-auto text-sm tracking-widest uppercase"
       >
         <button
           v-for="cat in filteredCategorias"

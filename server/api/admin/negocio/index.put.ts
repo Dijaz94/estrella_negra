@@ -13,6 +13,10 @@ export default defineEventHandler(async (event) => {
     correo: z.string().email().max(254).optional(),
     logo_url: z.string().max(254).nullable().optional(),
     banner_url: z.string().max(254).nullable().optional(),
+    redes: z.array(z.object({
+      nombre: z.string().min(1).max(20),
+      red_url: z.string().max(254),
+    })).max(10).optional(),
   })
 
   const body = await readBody(event)
