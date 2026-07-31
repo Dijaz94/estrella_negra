@@ -3,12 +3,7 @@ import nodemailer from 'nodemailer'
 
 export async function sendEmail(body: {nombre:string, email:string, mensaje:string}) {
   const config = useRuntimeConfig()
-  console.log('SMTP Config:', {
-    host: config.smtpHost,
-    port: config.smtpPort,
-    user: config.smtpUser,
-    pass: config.smtpPass,
-    feedbackEmail: config.feedbackEmail})
+  
 
   const transporter = nodemailer.createTransport({
     host: config.smtpHost,
