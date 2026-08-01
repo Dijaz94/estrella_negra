@@ -15,7 +15,7 @@ const { data: business } = useBusiness()
     <header
       class="sticky top-0 z-50 border-b border-border-subtle bg-bg-base/80 backdrop-blur-md"
     >
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <NuxtLink
           to="/"
           class="font-display text-xl tracking-widest uppercase text-text-heading"
