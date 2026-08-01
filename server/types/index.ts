@@ -121,3 +121,43 @@ export interface ProductoUpdateInput {
   disponible?: boolean
   destacado?: boolean
 }
+
+
+export interface DashboardStats {
+  totalEventos: number
+  eventosProximos: number
+  eventosFinalizados: number
+  eventosCancelados: number
+  totalCategorias: number
+  totalProductos: number
+  productosDisponibles: number
+  totalUsuarios: number
+  usuariosActivos: number
+  totalRedes: number
+  ultimosEventos: {
+    id_evento: number
+    titulo: string
+    estado: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
+    fecha_inicio: string
+    created_at: string
+  }[]
+}
+
+export interface User{
+  id_usuario: number
+  nombre: string
+  apellido: string
+  correo: string
+  rol:  'ADMIN' | 'EDITOR'
+  activo: boolean
+  password:string
+}
+
+
+export type UserCreateInput = {
+  nombre: string
+  apellido: string
+  correo: string
+  rol: 'ADMIN' | 'EDITOR'
+  password: string
+}
