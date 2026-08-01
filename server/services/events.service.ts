@@ -28,7 +28,7 @@ export async function getEvents(){
   const events = await prisma.evento.findMany({
     where: {
       estado: 'PROGRAMADO',
-      AND: [
+      OR: [
         { fecha_inicio: { gt: hoy } }, // días futuros, cualquier hora
         {
           fecha_inicio: hoy, // hoy exactamente
