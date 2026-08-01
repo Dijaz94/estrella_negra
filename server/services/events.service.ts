@@ -29,7 +29,7 @@ export async function getEvents(){
       estado: 'PROGRAMADO',
       fecha_inicio: {gt:hoy}
      },
-    orderBy: { fecha_inicio: 'desc' },
+    orderBy: { fecha_inicio: 'asc' },
   })
 
   return events.map(mapEventoPublic)
@@ -46,7 +46,7 @@ export async function getEventById(id: number){
 
 export async function getAllEvents(){
   const events = await prisma.evento.findMany({
-    orderBy:{fecha_inicio:'desc'}
+    orderBy:{fecha_inicio:'asc'}
 
     
   })
