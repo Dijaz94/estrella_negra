@@ -24,10 +24,12 @@ function mapEventoPublic(e: eventoModel): EventoPublic {
 
 export async function getEvents(){
   const hoy = new Date
+  const horaActual = hoy.toTimeString().slice(0, 5) 
   const events = await prisma.evento.findMany({
     where: { 
       estado: 'PROGRAMADO',
-      fecha_inicio: {gte:hoy}
+      fecha_inicio: {gte:hoy},
+      fecha_hora:{gte:horaActual}
      },
     orderBy: { fecha_inicio: 'asc' },
   })
