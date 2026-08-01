@@ -152,3 +152,7 @@ export interface User{
   activo: boolean
   password:string
 }
+
+export type UpdateUser = Omit<User, 'password'> & {
+  password?: string
+}
