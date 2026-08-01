@@ -15,7 +15,7 @@ const emit = defineEmits<{
 const el = ref<HTMLElement | null>(null)
 
 function onKeydownEnter() {
-  if (!showActions) el.value?.click()
+  if (!props.showActions) el.value?.click()
 }
 
 function estadoBadgeClass(estado: string) {
@@ -79,7 +79,7 @@ function estadoBadgeClass(estado: string) {
 
       <p
         
-        class="font-body text-sm font-medium tracking-wide text-brand-gold-soft"
+        class="font-body text-sm font-medium tracking-wide text-brand-gold-soft line-clamp-1"
       >
         {{ evento.artistas || '\u00A0' }}
       </p>

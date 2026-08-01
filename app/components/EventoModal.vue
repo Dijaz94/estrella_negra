@@ -52,7 +52,7 @@ const estadoBadge = computed(() => {
     :ui="{ content: 'max-w-2xl w-full' }"
   >
     <template #content="{ close }">
-      <div class="relative flex flex-col">
+      <div class="relative flex flex-col overflow-y-auto">
         <UButton @click="close"
           icon="i-lucide-x"
           variant="outline"
