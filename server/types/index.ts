@@ -142,3 +142,13 @@ export interface DashboardStats {
     created_at: string
   }[]
 }
+
+export interface User{
+  id_usuario: number
+  nombre: string
+  apellido: string
+  correo: string
+  rol:  'ADMIN' | 'EDITOR'
+  activo: boolean
+  password:string
+}
