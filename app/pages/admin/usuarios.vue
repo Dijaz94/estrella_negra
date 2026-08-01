@@ -107,7 +107,7 @@ async function handleDelete() {
       <h1 class="font-display text-2xl tracking-wider uppercase text-text-heading">
         Usuarios
       </h1>
-      <UButton
+      <UButton v-if="currentUser?.rol=== 'ADMIN'"
         label="Crear usuario"
         icon="i-lucide-user-plus"
         class="font-display uppercase tracking-wider"
