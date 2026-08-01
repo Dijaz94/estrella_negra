@@ -57,6 +57,16 @@ export interface CategoryItem {
   productos: MenuItem[]
 }
 
+export interface UsuarioPublic {
+  id_usuario: number
+  nombre: string
+  apellido: string
+  correo: string
+  rol: 'ADMIN' | 'EDITOR'
+  activo: boolean
+  created_at: string
+}
+
 export interface Feedback{
   nombre:string
   email:string
