@@ -107,7 +107,7 @@ async function handleDelete() {
       <h1 class="font-display text-2xl tracking-wider uppercase text-text-heading">
         Usuarios
       </h1>
-      <UButton
+      <UButton v-if="currentUser?.rol=== 'ADMIN'"
         label="Crear usuario"
         icon="i-lucide-user-plus"
         class="font-display uppercase tracking-wider"
@@ -198,12 +198,12 @@ async function handleDelete() {
     </div>
 
     <!-- Empty state -->
-    <div v-else class="py-16 text-center">
+    <div v-if="usuarios?.length===0" class="py-16 text-center">
       <p class="font-display text-lg tracking-wider text-text-muted uppercase">
         Aún no hay usuarios
       </p>
       <p class="mt-2 text-sm text-text-muted/60">
-        Creá el primer usuario del panel de administración.
+        Crea el primer usuario del panel de administración.
       </p>
       <UButton
         label="Crear usuario"
@@ -213,6 +213,14 @@ async function handleDelete() {
         @click="openCreate"
       />
     </div>
+    <div v-else class="py-16 text-center">
+      <p class="font-display text-lg tracking-wider text-text-muted uppercase">
+        Acceso permitido a administradores.
+      </p>
+      <p class="mt-2 text-sm text-text-muted/60">
+        No puedes editar esta sección.
+      </p>
+      </div>
 
     <!-- Modal crear/editar -->
     <UModal
