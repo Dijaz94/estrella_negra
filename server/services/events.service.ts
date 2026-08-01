@@ -26,11 +26,16 @@ export async function getEvents(){
   const hoy = new Date
   const horaActual = hoy.toTimeString().slice(0, 5) 
   const events = await prisma.evento.findMany({
-    where: { 
+    where: {
       estado: 'PROGRAMADO',
-      fecha_inicio: {gte:hoy},
-      fecha_hora:{gte:horaActual}
-     },
+      AND: [
+        { fecha_inicio: { gt: hoy } }, // días futuros, cualquier hora
+        {
+          fecha_inicio: hoy, // hoy exactamente
+          hora_inicio: { gte: horaActual },
+        },
+      ],
+    },
     orderBy: { fecha_inicio: 'asc' },
   })
 
