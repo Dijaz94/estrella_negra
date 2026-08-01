@@ -22,17 +22,19 @@ function mapEventoPublic(e: eventoModel): EventoPublic {
   }
 }
 
-export async function getEvents(){
-  const hoy = new Date
-  const horaActual = hoy.toTimeString().slice(0, 5) 
+export async function getEvents() {
+  const hoy = new Date()
+  const inicioHoy = new Date(Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth(), hoy.getUTCDate()))
+  const horaActual = parseTime(hoy.toTimeString().slice(0, 5))
+
   const events = await prisma.evento.findMany({
     where: {
       estado: 'PROGRAMADO',
       OR: [
-        { fecha_inicio: { gt: hoy } }, // días futuros, cualquier hora
+        { fecha_inicio: { gt: inicioHoy } }, // días futuros
         {
-          fecha_inicio: hoy, // hoy exactamente
-          hora_inicio: { gte: horaActual },
+          fecha_inicio: inicioHoy, // hoy
+          fecha_hora: { gte: horaActual }, // aún no pasó su hora
         },
       ],
     },
