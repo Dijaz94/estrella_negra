@@ -27,7 +27,7 @@ export async function getEvents(){
   const events = await prisma.evento.findMany({
     where: { 
       estado: 'PROGRAMADO',
-      fecha_inicio: {gt:hoy}
+      fecha_inicio: {gte:hoy}
      },
     orderBy: { fecha_inicio: 'desc' },
   })
