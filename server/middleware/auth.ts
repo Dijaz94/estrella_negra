@@ -36,4 +36,8 @@ export default defineEventHandler(async (event) => {
   }
 
   event.context.user = user
+
+  if (path.startsWith('/api/admin/usuarios') && user.rol !== 'ADMIN') {
+    throw createError({ statusCode: 403, statusMessage: 'Solo administradores' })
+  }
 })

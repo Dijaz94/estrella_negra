@@ -1,4 +1,4 @@
-import type { User } from "../types"
+import type { User, UserCreateInput } from "../types"
 import { hashPassword } from "./auth.service"
 export async function getAllUsers(){
 
@@ -8,7 +8,7 @@ export async function getAllUsers(){
 
 }
 
-export async function createUser(user:User){
+export async function createUser(user:UserCreateInput){
     if (!user || !user.nombre || !user.apellido || !user.correo || !user.rol || !user.password){
         throw createError({
             statusCode:400,

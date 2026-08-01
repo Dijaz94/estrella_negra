@@ -153,6 +153,11 @@ export interface User{
   password:string
 }
 
-export type UpdateUser = Omit<User, 'password'> & {
-  password?: string
+
+export type UserCreateInput = {
+  nombre: string
+  apellido: string
+  correo: string
+  rol: 'ADMIN' | 'EDITOR'
+  password: string
 }
