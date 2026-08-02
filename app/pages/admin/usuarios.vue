@@ -213,7 +213,9 @@ async function handleDelete() {
         @click="openCreate"
       />
     </div>
-    <div v-else class="py-16 text-center">
+
+    <!-- Acceso no autorizado -->
+    <div v-if="currentUser?.rol!=='ADMIN'"  class="py-16 text-center">
       <p class="font-display text-lg tracking-wider text-text-muted uppercase">
         Acceso permitido a administradores.
       </p>
