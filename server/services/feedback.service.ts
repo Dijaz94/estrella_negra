@@ -1,5 +1,6 @@
 
 import nodemailer from 'nodemailer'
+import { feedbackEmailHtml } from '../utils/emailTemplates'
 
 export async function sendEmail(body: {nombre:string, email:string, mensaje:string}) {
   const config = useRuntimeConfig()
@@ -16,14 +17,16 @@ export async function sendEmail(body: {nombre:string, email:string, mensaje:stri
 
   })
 
-  await transporter.sendMail({
-    from:`"Estrella Negra" <${config.smtpUser}>`,
-    to:config.feedbackEmail,
-    subject: 'Nuevo feedback de cliente',
-    html: `<p><strong>Nombre:</strong> ${body.nombre}</p>
-           <p><strong>Email:</strong> ${body.email}</p>
-           <p><strong>Mensaje:</strong> ${body.mensaje}</p>`,
-  })
+await transporter.sendMail({
+  from: `"Estrella Negra" <${config.smtpUser}>`,
+  to: config.feedbackEmail,
+  subject: 'Nuevo feedback de cliente',
+  html: feedbackEmailHtml({
+    nombre: body.nombre,
+    email: body.email,
+    mensaje: body.mensaje,
+  }),
+})
 
 
 
