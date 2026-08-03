@@ -49,15 +49,7 @@ async function handleFeedback(data: { nombre: string; email: string; mensaje: st
 <template>
   <div v-if="business" class="space-y-16 pb-16 md:space-y-24 md:pb-24">
     <HeroSection :business="business" />
-      <section class="text-center">
-        <h3 class="m-4 p-2 font-display text-xl">Revisa nuestros mejores productos disponibles</h3>
-        <NuxtLink
-          to="/menu"
-          class="inline-flex items-center gap-2 rounded border border-brand-gold/40 px-8 py-3 font-display text-base font-semibold tracking-widest uppercase text-brand-gold transition-all duration-200 hover:bg-brand-gold/10 active:scale-[0.97]"
-        >
-          Ver menú completo
-        </NuxtLink>
-      </section>
+    <MenuCta />
     <BusinessInfo :business="business" />
 
 

@@ -69,7 +69,7 @@ const hoy = computed(() => horarioDeHoy(props.business.horario))
         >
           <span
             class="inline-block h-1.5 w-1.5 rounded-full"
-            :class="hoy?.abierto ? 'bg-green-500' : 'bg-red-500'"
+            :class="hoy?.abierto ? 'bg-green-500' : 'bg-cta'"
           />
           {{ hoy ? (hoy.abierto ? `Abierto hoy — ${hoy.hora_apertura} a ${hoy.hora_cierre}` : 'Cerrado hoy') : '' }}
         </span>
