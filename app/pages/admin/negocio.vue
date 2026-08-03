@@ -159,7 +159,7 @@ async function handleSubmit() {
             </h2>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <UFormField label="Teléfono" name="telefono">
+              <UFormField label="Teléfono +56 9 XXXX XXXX" name="telefono">
                 <UInput v-model="form.telefono" placeholder="+56 9 ..." class="w-full" />
               </UFormField>
 

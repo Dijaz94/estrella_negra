@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Estrella Negra',
-      titleTemplate: '%s · Estrella Negra',
+      titleTemplate: '%s · Bar de Jazz en Valparaíso',
     },
   },
 

@@ -70,13 +70,15 @@ function esHoy(dia: string): boolean {
       </h3>
       <div class="space-y-2 text-base text-text-muted">
         <p v-if="business.telefono" class="flex items-center gap-2">
-          <span class="text-xs">📞</span>
+          <a :href="'tel:'+business.telefono" class="text-xs">📞
           {{ business.telefono }}
+          </a>
         </p>
         
         <p v-if="business.correo" class="flex items-center gap-2">
-          <span class="text-base">✉</span>
+          <a :href="'mailto:'+business.correo" class="text-base">✉
           {{ business.correo }}
+          </a>
         </p>
       </div>
     </div>

@@ -77,7 +77,7 @@ async function handleLogout() {
         </NuxtLink>
         <UButton
           @click="handleLogout"
-          class="flex rounded text-left text-sm text-cta/70 hover:text-cta hover:bg-cta/5 transition-colors items-center"
+          class="flex rounded text-left text-sm bg-cta  text-cta/70 hover:text-cta hover:bg-cta/5 transition-colors items-center"
           icon="i-lucide-log-out"
         >
           Cerrar sesión
