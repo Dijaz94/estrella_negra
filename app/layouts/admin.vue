@@ -17,9 +17,19 @@ const navigationItems = [
 
 const { data: business } = useBusiness()
 
+const loggingOut = ref(false)
+
 async function handleLogout() {
-  await $fetch('/api/admin/auth/logout', { method: 'POST' })
-  await navigateTo('/admin/login')
+  if (loggingOut.value) return
+  loggingOut.value = true
+  try {
+    await $fetch('/api/admin/auth/logout', { method: 'POST' })
+  } catch {
+    // still navigate even if the server call fails
+  } finally {
+    await navigateTo('/admin/login')
+    loggingOut.value = false
+  }
 }
 
 </script>
@@ -77,8 +87,10 @@ async function handleLogout() {
         </NuxtLink>
         <UButton
           @click="handleLogout"
-          class="flex rounded text-left text-sm bg-cta  text-cta/5 hover:text-cta hover:bg-cta/5 transition-colors items-center"
+          :loading="loggingOut"
+          :disabled="loggingOut"
           icon="i-lucide-log-out"
+          class="w-full justify-start rounded border border-border-subtle bg-bg-surface-alt px-3 py-2 text-sm text-text-muted transition-colors hover:border-cta/40 hover:bg-cta/5 hover:text-cta"
         >
           Cerrar sesión
         </UButton>
