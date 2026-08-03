@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
     if (!recaptchaResponse.success || recaptchaResponse.action !== 'feedback' || recaptchaResponse.score < 0.5) {
       throw createError({
         statusCode: 400,
-        message: 'Verificación de seguridad fallida. Por favor, reintente.',
+        statusMessage: 'Verificación de seguridad fallida. Por favor, reintente.',
       })
     }
   } catch (e: any) {
