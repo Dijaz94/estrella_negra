@@ -58,3 +58,7 @@ html {
 @utility scrollbar-gutter-stable {
   scrollbar-gutter: stable;
 }
+
+.grecaptcha-badge {
+  visibility: hidden;
+}

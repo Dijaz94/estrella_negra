@@ -20,7 +20,7 @@ const errorFeedback = ref(false)
 const mensajeError = ref('')
 const toast = useToast()
 
-async function handleFeedback(data: { nombre: string; email: string; mensaje: string }){
+async function handleFeedback(data: { nombre: string; email: string; mensaje: string; recaptchaToken: string }){
   enviandoFeedback.value=true
   try{
     const emailEnviado = data.email

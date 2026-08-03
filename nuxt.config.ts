@@ -1,12 +1,21 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@nuxt/scripts'],
   css: ['~/assets/css/main.css'],
 
 
   future: {
     compatibilityVersion: 4,
+  },
+
+  scripts: {
+    registry: {
+      googleRecaptcha: {
+        siteKey: '6Ld1x3ItAAAAAAzkwBB_sANdC_uNoI8qzApk21i8',
+        trigger: 'onNuxtReady',
+      },
+    },
   },
 
   runtimeConfig: {
@@ -22,6 +31,7 @@ export default defineNuxtConfig({
     smtpPort: '',
     smtpUser: '',
     smtpPass: '',
+    recaptchaSecretKey: '',
   },
 
   nitro: {
