@@ -11,14 +11,6 @@ export async function uploadImage(
   }
 
 
-
-  if (!ALLOWED_TYPES.includes('images/webp')) {
-    throw createError({
-      statusCode: 400,
-      message: 'Formato no permitido.',
-    })
-  }
-
   const name = `${crypto.randomUUID()}.webp`
   const path = folder ? `${folder}/${name}` : name
 
