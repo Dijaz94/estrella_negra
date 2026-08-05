@@ -80,6 +80,23 @@ async function handleDelete() {
 }
 
 
+const estados = [
+  { label: 'TODOS', icon: 'i-lucide-layout-grid' },
+  { label: 'PROGRAMADO', icon: 'i-lucide-timer' },
+  { label: 'FINALIZADO', icon: 'i-lucide-check-circle' },
+  { label: 'CANCELADO', icon: 'i-lucide-x-circle' }
+]
+
+const estadoFilterIndex = ref(0)
+const estadoKeys = [null, 'PROGRAMADO', 'FINALIZADO', 'CANCELADO'] as const
+const estadoFilter = computed(() => estadoKeys[estadoFilterIndex.value])
+
+const eventosFiltrados = computed(() => {
+  if (!eventos.value) return []
+  if (!estadoFilter.value) return eventos.value
+  return eventos.value.filter(e => e.estado === estadoFilter.value)
+})
+
 </script>
 
 <template>
@@ -92,10 +109,14 @@ async function handleDelete() {
       <UButton label="+ Crear evento" @click="openCreate" />
     </div>
 
+    <!-- Filtrado por estado de evento -->
+
+    <UTabs :items="estados" v-model="estadoFilterIndex" class="w-full" />
+
     <!-- Grid de cards -->
-    <div v-if="eventos?.length" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div v-if="eventosFiltrados.length" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       <CardEventos
-        v-for="ev in eventos"
+        v-for="ev in eventosFiltrados"
         :key="ev.id_evento"
         :evento="ev"
         show-estado
@@ -105,7 +126,17 @@ async function handleDelete() {
       />
     </div>
 
-    <!-- Empty state -->
+    <!-- Empty state: filtro sin resultados -->
+    <div v-else-if="eventos?.length" class="py-16 text-center">
+      <p class="font-display text-lg tracking-wider text-text-muted uppercase">
+        No hay eventos con este estado
+      </p>
+      <p class="mt-2 text-sm text-text-muted/60">
+        Prueba con otro filtro o creá un nuevo evento.
+      </p>
+    </div>
+
+    <!-- Empty state: sin eventos -->
     <div v-else class="py-16 text-center">
       <p class="font-display text-lg tracking-wider text-text-muted uppercase">
         No hay eventos creados aún
