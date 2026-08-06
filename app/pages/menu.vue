@@ -3,24 +3,24 @@ import type { CategoryItem } from '~/types'
 
 const { data: menu, pending } = useMenu()
 
-const categorias = computed<CategoryItem[]>(() => menu.value ?? [])
+const categorias = computed<CategoryItem[]>(() => menu.value ?? []) //inicia en arreglo vacío para que no se rompa
 
 const searchQuery = ref('')
 const activeId = ref<number | null>(null)
-const sectionEls = ref<Map<number, HTMLElement>>(new Map())
+const sectionEls = ref<Map<number, HTMLElement>>(new Map()) // Map es como un objeto que distingue entre string y number
 
 const filteredCategorias = computed(() => {
   const q = searchQuery.value.toLowerCase().trim()
-  if (!q) return categorias.value
+  if (!q) return categorias.value //si no se ha escrito nada son todas las categorias
 
-  return categorias.value
+  return categorias.value //retorna las categorias que pasan por el mapeo y el filtro
     .map(cat => ({
       ...cat,
       productos: cat.productos.filter(p =>
-        (p.nombre ?? '').toLowerCase().includes(q)
+        (p.nombre ?? '').toLowerCase().includes(q) //todas las categorias que cumplan con que el producto tenga incluido el texto ingresado por el usuario
       )
     }))
-    .filter(cat => cat.productos.length > 0)
+    .filter(cat => cat.productos.length > 0) //la categoría debe tener al menos un producto
 })
 
 function setSectionRef(id: number, el: HTMLElement | null) {
@@ -36,17 +36,17 @@ function scrollTo(id: number) {
 let observer: IntersectionObserver | null = null
 
 function rebuildObserver() {
-  observer?.disconnect()
+  observer?.disconnect() //apagamos el observer para no dejar elementos pegados en memoria
   if (!categorias.value.length) return
-  observer = new IntersectionObserver(
+  observer = new IntersectionObserver( //avisa cuandoun elemento entra o sale de la zona visible
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          activeId.value = Number((entry.target as HTMLElement).dataset.categoryId)
+          activeId.value = Number((entry.target as HTMLElement).dataset.categoryId) //reconoce el indice de la categoria seleccionada
         }
       }
     },
-    { rootMargin: '-80px 0px -60% 0px' },
+    { rootMargin: '-80px 0px -60% 0px' }, //que pixeles ve, no desde el comienzo
   )
   for (const el of sectionEls.value.values()) {
     observer.observe(el)
@@ -56,6 +56,7 @@ function rebuildObserver() {
 watch(filteredCategorias, () => {
   const cats = filteredCategorias.value
   if(cats[0]) activeId.value = cats.length ? cats[0].id_categoria : null
+  nextTick(rebuildObserver) //espera a que se actualice el DOM apra correr rebuildObserver
 })
 
 watch(searchQuery, (q, prev) => {
