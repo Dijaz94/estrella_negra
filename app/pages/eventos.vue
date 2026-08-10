@@ -19,7 +19,7 @@ const selectedEvento = ref<EventoPublic | null>(null)
         <span class="h-px w-8 bg-brand-gold/60" />
       </div>
       <p class="text-text-muted">Próximos eventos en Estrella Negra. </p>
-      <p  class="text-text-muted">Selecciona uno para reservar entradas.</p>
+      <p  class="text-text-muted">Selecciona un evento para reservar entradas.</p>
     </header>
 
     <div v-if="pending" class="py-16 text-center">
