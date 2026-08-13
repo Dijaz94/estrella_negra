@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     smtpUser: '',
     smtpPass: '',
     recaptchaSecretKey: '',
+    eventsCronSecret: '',
   },
 
   nitro: {

@@ -1,0 +1,28 @@
+name: Finalizar Eventos Pasados
+
+on:
+  schedule:
+    - cron: '5 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Finalizar eventos pasados
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${{ secrets.SITE_URL }}/api/admin/events/finalize-past" \
+            -H "Authorization: Bearer ${{ secrets.EVENTS_CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+          
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "Error al finalizar eventos"
+            exit 1
+          fi
