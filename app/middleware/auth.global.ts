@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
-  if (!to.path.startsWith('/admin')) {
+  if (!to.path.startsWith('/admin') ||  to.path === '/api/admin/events/finalize-past') {
     return
   }
 
