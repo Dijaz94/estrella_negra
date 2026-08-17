@@ -9,6 +9,8 @@ export interface EventoPublic {
   afiche_url: string | null
   estado: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
   capacidad_max: number
+  precio_preventa: number | null
+  precio_puerta: number | null
 }
 
 export interface DiaHorario {

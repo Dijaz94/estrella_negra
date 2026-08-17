@@ -1,5 +1,10 @@
 export function useEvents() {
-  return useFetch('/api/events')
+  return useFetch('/api/events', {
+    key: 'events',
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.payload.data[key]
+    },
+  })
 }
 
 export function useEvent(id: Ref<number> | number) {

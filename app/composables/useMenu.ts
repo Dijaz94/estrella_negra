@@ -1,5 +1,10 @@
 export function useMenu() {
-  const data = useFetch('/api/menu')
+  const data = useFetch('/api/menu', {
+    key: 'menu',
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.payload.data[key]
+    },
+  })
 
   
   return data

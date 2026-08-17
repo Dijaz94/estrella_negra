@@ -14,6 +14,8 @@ export type EventoPublic = {
   afiche_url: string | null
   estado: EventoEstado
   capacidad_max: number
+  valor_preventa: number | null
+  valor_entrada: number | null
 }
 
 export type EventoCreateInput = Omit<EventoPublic, 'id_evento'>
@@ -28,6 +30,8 @@ export type EventoUpdateInput = {
   afiche_url?: string | null
   estado?: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
   capacidad_max?: number
+  precio_preventa: number | null
+  precio_puerta: number | null
 }
 export interface DiaHorario {
   dia: string

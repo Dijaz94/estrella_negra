@@ -42,8 +42,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/admin/**': { ssr: false },
-  },
+  '/admin/**': { ssr: false },
+  '/api/business': { swr: 3600 },        // 1 hora
+  '/api/menu': { swr: 300 },             // 5 minutos  
+  '/api/events': { swr: 60 },            // 1 minuto
+  '/api/events/**': { swr: 60 },
+},
   app: {
     head: {
       title: 'Estrella Negra',

@@ -11,6 +11,8 @@ export default defineEventHandler(async (event) => {
     artistas: z.string().nullish().transform(v => v ?? null),
     fecha_fin: z.string().nullish().transform(v => v ?? null),
     afiche_url: z.string().nullish().transform(v => v ?? null),
+    precio_preventa: z.number().int().min(1).nullish().transform(v => v ?? null),
+    precio_puerta: z.number().int().min(1).nullish().transform(v => v ?? null),
   })
 
   const body = await readBody(event)

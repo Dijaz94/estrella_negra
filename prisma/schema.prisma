@@ -37,6 +37,11 @@ fecha_hora DateTime @db.Time
 afiche_url String? @db.VarChar(255)
 estado EstadoEvento
 capacidad_max Int
+
+precio_preventa Int?     // null = no hay preventa
+precio_puerta   Int?     // null = no hay precio / evento gratis
+
+
 created_at DateTime @default(now())
 
 updated_at DateTime @updatedAt
