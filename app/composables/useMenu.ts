@@ -1,7 +1,17 @@
 export function useMenu() {
   return useFetch('/api/menu', {
     key: 'menu',
+    getCachedData(key, nuxtApp) {
+      return nuxtApp.payload.data[key]
+    },
   })
+}
+
+const MENU_POLL_INTERVAL = 20_000
+
+export function startMenuPolling(refresh: () => Promise<void>) {
+  const id = setInterval(() => { refresh() }, MENU_POLL_INTERVAL)
+  return () => clearInterval(id)
 }
 
 export function useAdminMenu(){

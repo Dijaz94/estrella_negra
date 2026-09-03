@@ -26,5 +26,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const created = await createNewEvent(parsed.data)
+  await invalidateRouteCache('GET:/api/events')
   return { ok: true, created }
 })

@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
-  setHeader(event, 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-  setHeader(event, 'Pragma', 'no-cache')
+  setHeader(event, 'Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
   const menu = await getMenu()
   return menu
 })

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { startMenuPolling } from '~/composables/useMenu'
 import type { CategoryItem } from '~/types'
 
 const { data: menu, pending, refresh } = useMenu()
@@ -7,6 +8,7 @@ const categorias = computed<CategoryItem[]>(() => menu.value ?? []) //inicia en 
 
 const searchQuery = ref('')
 const activeId = ref<number | 'destacados' | null>(null)
+let stopPolling = () => {}
 
 const filteredCategorias = computed(() => {
   const q = searchQuery.value.toLowerCase().trim()
@@ -67,8 +69,12 @@ watch([filteredCategorias, destacados], () => {
 onMounted(() => {
   refresh()
   nextTick(rebuildObserver)
+  stopPolling = startMenuPolling(refresh)
 })
-onUnmounted(() => observer?.disconnect())
+onUnmounted(() => {
+  observer?.disconnect()
+  stopPolling()
+})
 </script>
 
 <template>

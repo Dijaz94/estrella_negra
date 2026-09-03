@@ -17,6 +17,10 @@ export default defineEventHandler(async (event) => {
     data: { estado: 'FINALIZADO' }
   })
 
+  if (eventosFinalizados.count > 0) {
+    await invalidateRouteCache('GET:/api/events')
+  }
+
   return {
     updated: eventosFinalizados.count,
     message: `${eventosFinalizados.count} eventos finalizados`

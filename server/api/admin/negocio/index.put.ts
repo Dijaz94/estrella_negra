@@ -32,5 +32,6 @@ export default defineEventHandler(async (event) => {
   const data: NegocioUpdateInput = { ...parsed.data }
 
   const updated = await updateBusinessInfo(data)
+  await invalidateRouteCache('GET:/api/business')
   return updated
 })

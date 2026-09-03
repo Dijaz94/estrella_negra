@@ -31,5 +31,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const updated = await updateEvent(id, parsed.data)
+  await invalidateRouteCache('GET:/api/events')
   return updated
 })
