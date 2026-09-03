@@ -36,5 +36,6 @@ export default defineEventHandler(async (event) => {
     destacado: parsed.data.destacado
   } 
   const updated = await updateProduct(parsedData, id)
+  await invalidateRouteCache('GET:/api/menu')
   return updated
 })

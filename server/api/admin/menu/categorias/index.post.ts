@@ -17,5 +17,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const created = await createCategory(parsed.data)
+  await invalidateRouteCache('GET:/api/menu')
   return { ok: true, created }
 })

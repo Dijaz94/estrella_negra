@@ -4,5 +4,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'ID inválido' })
   }
 
-  return await deleteCategory(id)
+  const result = await deleteCategory(id)
+  await invalidateRouteCache('GET:/api/menu')
+  return result
 })

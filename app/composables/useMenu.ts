@@ -1,14 +1,7 @@
 export function useMenu() {
-  const data = useFetch('/api/menu', {
+  return useFetch('/api/menu', {
     key: 'menu',
-    getCachedData(key, nuxtApp) {
-      return nuxtApp.payload.data[key]
-    },
   })
-
-  
-  return data
-
 }
 
 export function useAdminMenu(){

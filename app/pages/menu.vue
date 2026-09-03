@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CategoryItem } from '~/types'
 
-const { data: menu, pending } = useMenu()
+const { data: menu, pending, refresh } = useMenu()
 
 const categorias = computed<CategoryItem[]>(() => menu.value ?? []) //inicia en arreglo vacío para que no se rompa
 
@@ -63,7 +63,10 @@ watch(searchQuery, (q, prev) => {
   if (!q.trim() && prev.trim()) nextTick(rebuildObserver)
 })
 
-onMounted(() => { nextTick(rebuildObserver) })
+onMounted(() => {
+  refresh()
+  nextTick(rebuildObserver)
+})
 onUnmounted(() => observer?.disconnect())
 </script>
 
@@ -186,15 +189,11 @@ onUnmounted(() => observer?.disconnect())
           </div>
         </li>
       </ul>
-      
-      
-      
+    </section>
+
     <div v-if="!pending && menu?.length == 0" class="py-16 text-center">
       <p class="text-text-muted">El menú se está actualizando.</p>
     </div>
-    </section>
-
-
   </div>
 </template>
 

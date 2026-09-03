@@ -22,5 +22,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const updated = await updateCategory(parsed.data, id)
+  await invalidateRouteCache('GET:/api/menu')
   return updated
 })

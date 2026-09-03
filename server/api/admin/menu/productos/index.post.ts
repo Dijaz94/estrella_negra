@@ -22,5 +22,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const created = await createProduct(parsed.data)
+  await invalidateRouteCache('GET:/api/menu')
   return { ok: true, created }
 })
