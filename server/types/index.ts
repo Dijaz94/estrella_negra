@@ -30,8 +30,8 @@ export type EventoUpdateInput = {
   afiche_url?: string | null
   estado?: 'PROGRAMADO' | 'CANCELADO' | 'FINALIZADO'
   capacidad_max?: number
-  precio_preventa: number | null
-  precio_puerta: number | null
+  precio_preventa?: number | null
+  precio_puerta?: number | null
 }
 export interface DiaHorario {
   dia: string
@@ -121,7 +121,7 @@ export interface ProductoUpdateInput {
   nombre?: string
   descripcion?: string
   precio?: number
-  imagen_url: string | null
+  imagen_url?: string | null
   disponible?: boolean
   destacado?: boolean
 }

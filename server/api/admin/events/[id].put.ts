@@ -13,11 +13,11 @@ export default defineEventHandler(async (event) => {
     fecha_hora: z.string().optional(),
     capacidad_max: z.number().min(1).optional(),
     estado: z.enum(['PROGRAMADO', 'CANCELADO', 'FINALIZADO']).optional(),
-    artistas: z.string().nullish().transform(v => v ?? null),
-    fecha_fin: z.string().nullish().transform(v => v ?? null),
-    afiche_url: z.string().nullish().transform(v => v ?? null),
-    precio_preventa: z.number().int().min(1).nullish().transform(v => v ?? null),
-    precio_puerta: z.number().int().min(1).nullish().transform(v => v ?? null),
+    artistas: z.string().nullish(),
+    fecha_fin: z.string().nullish(),
+    afiche_url: z.string().nullish(),
+    precio_preventa: z.number().int().min(1).nullish(),
+    precio_puerta: z.number().int().min(1).nullish(),
   })
 
   const body = await readBody(event)

@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import type { ProductoUpdateInput } from '~~/server/types'
 
 export default defineEventHandler(async (event) => {
   const id = Number(event.context.params?.id)
@@ -26,16 +25,7 @@ export default defineEventHandler(async (event) => {
       message: parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', '),
     })
   }
-  const parsedData:ProductoUpdateInput ={
-    id_categoria: parsed.data.id_categoria,
-    nombre: parsed.data.nombre,
-    descripcion: parsed.data.descripcion,
-    precio: parsed.data.precio,
-    imagen_url: parsed.data.imagen_url||null,
-    disponible: parsed.data.disponible,
-    destacado: parsed.data.destacado
-  } 
-  const updated = await updateProduct(parsedData, id)
+  const updated = await updateProduct(parsed.data, id)
   await invalidateRouteCache('GET:/api/menu')
   return updated
 })

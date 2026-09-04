@@ -100,6 +100,28 @@ describe('PUT /api/admin/menu/productos/[id]', () => {
     expect(result).toEqual({ id_producto: 10, disponible: false })
   })
 
+  it('does NOT pass imagen_url when body omits it (partial update safety)', async () => {
+    updateProductMock.mockResolvedValueOnce({ id_producto: 10, disponible: false })
+    setRequestBody({ disponible: false })
+
+    const { default: handler } = await import('../../../../../server/api/admin/menu/productos/[id].put')
+    await handler(mockEvent({ context: { params: { id: '10' } } }))
+
+    const passedData = updateProductMock.mock.calls[0][0]
+    expect(passedData).not.toHaveProperty('imagen_url')
+  })
+
+  it('passes imagen_url: null when body explicitly sends null (intentional clear)', async () => {
+    updateProductMock.mockResolvedValueOnce({ id_producto: 10, imagen_url: null })
+    setRequestBody({ disponible: false, imagen_url: null })
+
+    const { default: handler } = await import('../../../../../server/api/admin/menu/productos/[id].put')
+    await handler(mockEvent({ context: { params: { id: '10' } } }))
+
+    const passedData = updateProductMock.mock.calls[0][0]
+    expect(passedData.imagen_url).toBeNull()
+  })
+
   it('does NOT call invalidateRouteCache when product ID is invalid', async () => {
     const { default: handler } = await import('../../../../../server/api/admin/menu/productos/[id].put')
     await expect(handler(mockEvent({ context: { params: { id: 'invalid-id' } } }))).rejects.toThrow()

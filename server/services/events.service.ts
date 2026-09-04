@@ -1,6 +1,7 @@
 import type { eventoModel } from '../../app/generated/prisma/models'
 import type { EventoPublic } from '~/types'
 import type { EventoCreateInput, EventoUpdateInput } from '../types'
+import { deleteFromSupabase } from './upload.service'
 
 function parseTime(timeStr: string): Date {
   const [hours, minutes] = timeStr.split(':').map(Number)
@@ -94,7 +95,17 @@ export async function updateEvent(id: number, data: EventoUpdateInput) {
     throw createError({ statusCode: 404, statusMessage: 'Evento no encontrado' })
   }
 
-  const prismaData: Record<string, unknown> = { ...data }
+  const prismaData: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) {
+      prismaData[key] = value
+    }
+  }
+
+  if (prismaData.afiche_url === null && existing.afiche_url) {
+    await deleteFromSupabase(existing.afiche_url)
+  }
+
   for (const key of NULLABLE_FIELDS) {
     if (key in prismaData && prismaData[key] === null) {
       prismaData[key] = { set: null }

@@ -8,11 +8,11 @@ export default defineEventHandler(async (event) => {
     fecha_hora: z.string().min(1, 'La hora es obligatoria'),
     capacidad_max: z.number().min(1, 'Mínimo 1 persona'),
     estado: z.enum(['PROGRAMADO', 'CANCELADO', 'FINALIZADO']),
-    artistas: z.string().nullish().transform(v => v ?? null),
-    fecha_fin: z.string().nullish().transform(v => v ?? null),
-    afiche_url: z.string().nullish().transform(v => v ?? null),
-    precio_preventa: z.number().int().min(1).nullish().transform(v => v ?? null),
-    precio_puerta: z.number().int().min(1).nullish().transform(v => v ?? null),
+    artistas: z.string().nullish(),
+    fecha_fin: z.string().nullish(),
+    afiche_url: z.string().nullish(),
+    precio_preventa: z.number().int().min(1).nullish(),
+    precio_puerta: z.number().int().min(1).nullish(),
   })
 
   const body = await readBody(event)
