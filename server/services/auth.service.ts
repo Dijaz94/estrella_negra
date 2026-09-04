@@ -1,8 +1,15 @@
 import { hashSync, compareSync } from 'bcryptjs'
-import { createHash } from 'node:crypto'
+import { createHmac, timingSafeEqual } from 'node:crypto'
 
-const TOKEN_SECRET = process.env.NUXT_JWT_SECRET ?? 'change-me-in-production'
 const TOKEN_EXPIRY = 7 * 24 * 60 * 60 * 1000 // 7 days
+
+function getTokenSecret(): string {
+  const secret = useRuntimeConfig().jwtSecret
+  if (!secret) {
+    throw new Error('NUXT_JWT_SECRET is not configured')
+  }
+  return secret
+}
 
 export interface TokenPayload {
   userId: number
@@ -19,10 +26,10 @@ export function verifyPassword(password: string, stored: string): boolean {
 }
 
 export function createToken(payload: Omit<TokenPayload, 'exp'>): string {
-  const exp = Date.now() + TOKEN_EXPIRY //tomamos la validez del token en milisegundos
-  const data = JSON.stringify({ ...payload, exp }) //tomamos todo lo que se ingresa en el payload, y le agregamos la nueva expiración del token
-  const signature = createHash('sha256') 
-    .update(data + TOKEN_SECRET)
+  const exp = Date.now() + TOKEN_EXPIRY
+  const data = JSON.stringify({ ...payload, exp })
+  const signature = createHmac('sha256', getTokenSecret())
+    .update(data)
     .digest('hex')
   return Buffer.from(`${data}.${signature}`).toString('base64url')
 }
@@ -36,11 +43,13 @@ export function verifyToken(token: string): TokenPayload | null {
     const data = decoded.slice(0, dotIndex)
     const signature = decoded.slice(dotIndex + 1)
 
-    const expected = createHash('sha256')
-      .update(data + TOKEN_SECRET)
+    const expected = createHmac('sha256', getTokenSecret())
+      .update(data)
       .digest('hex')
 
-    if (signature !== expected) return null
+    const sigBuf = Buffer.from(signature, 'hex')
+    const expBuf = Buffer.from(expected, 'hex')
+    if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) return null
 
     const payload: TokenPayload = JSON.parse(data)
     if (Date.now() > payload.exp) return null

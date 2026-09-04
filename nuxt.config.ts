@@ -25,6 +25,7 @@ export default defineNuxtConfig({
       siteUrl: '',
       businessWhatsApp: '',
     },
+    jwtSecret: '',
     supabaseServiceKey: '',
     feedbackEmail: '',
     smtpHost: '',

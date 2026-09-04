@@ -100,7 +100,7 @@ export async function deleteCategory( id:number){
 
   await prisma.producto.deleteMany({ where: { id_categoria: id } })
   await prisma.categoria.delete({ where: { id_categoria: id } })
-
+  return {ok:true}
 }
 
 

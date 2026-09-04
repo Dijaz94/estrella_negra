@@ -28,7 +28,7 @@ export async function createUser(user:UserCreateInput){
                 password_hash: password
             }
         })
-    return { created, ok: true }
+    return {  ok: true }
     } catch (e: any) {
         if (e.code === 'P2002') {
             throw createError({ statusCode: 409, statusMessage: 'Ya existe un usuario con ese correo' })
@@ -75,7 +75,7 @@ export async function updateUser(id:number, data: Partial<User>){
         where: { id_usuario: id },
         data: prismaData,
     })
-        return { updated, ok: true }
+        return {  ok: true }
         } catch (e: any) {
             if (e.code === 'P2002') {
             throw createError({ statusCode: 409, statusMessage: 'Ya existe un usuario con ese correo' })
@@ -101,5 +101,5 @@ export async function deleteUser(id:number){
     const deleted = await prisma.usuario.delete({
         where:{id_usuario:id}
     })
-    return {deleted, ok:true}
+    return { ok:true}
 }

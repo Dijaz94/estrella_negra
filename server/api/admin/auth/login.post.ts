@@ -5,9 +5,31 @@ const loginSchema = z.object({
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
 })
 
+const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
+const RATE_LIMIT_MAX = 5 // max attempts per window
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+
+function checkRateLimit(ip: string): void {
+  const now = Date.now()
+  const record = rateLimitMap.get(ip)
+
+  if (!record || now > record.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW })
+    return
+  }
+
+  record.count++
+  if (record.count > RATE_LIMIT_MAX) {
+    throw createError({
+      statusCode: 429,
+      message: 'Demasiados intentos. Intenta de nuevo en un minuto.',
+    })
+  }
+}
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const parsed = loginSchema.safeParse(body) //verificamos que  se ingresó correo y contraseña
+  const parsed = loginSchema.safeParse(body)
 
   if (!parsed.success) {
     throw createError({
@@ -16,9 +38,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const ip = getRequestHeader(event, 'x-forwarded-for')?.split(',')[0]?.trim()
+    || getRequestHeader(event, 'x-real-ip')
+    || 'unknown'
+  checkRateLimit(ip)
+
   const { correo, password } = parsed.data
 
-  const user = await prisma.usuario.findUnique({ //consulta base de datos
+  const user = await prisma.usuario.findUnique({
     where: { correo },
   })
 
@@ -30,7 +57,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Cuenta inactiva' })
   }
 
-  const token = createToken({ userId: user.id_usuario, role: user.rol }) //creamos el token
+  const token = createToken({ userId: user.id_usuario, role: user.rol })
 
   setCookie(event, 'auth_token', token, {
     httpOnly: true,
@@ -41,7 +68,6 @@ export default defineEventHandler(async (event) => {
   })
 
   return {
-    token,
     user: {
       id_usuario: user.id_usuario,
       nombre: user.nombre,

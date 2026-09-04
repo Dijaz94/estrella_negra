@@ -73,6 +73,8 @@ export async function createNewEvent(event: EventoCreateInput) {
         estado: event.estado,
         artistas: event.artistas,
         capacidad_max: event.capacidad_max,
+        precio_preventa: event.precio_preventa,
+        precio_puerta:event.precio_puerta
       },
     })
     return created

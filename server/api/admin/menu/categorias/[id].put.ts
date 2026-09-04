@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const schema = z.object({
-    nombre: z.string().min(1).max(80).optional(),
+    nombre: z.string().min(1).max(30).optional(),
     orden: z.number().int().min(1).optional(),
   })
 
